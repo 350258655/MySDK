@@ -3,6 +3,7 @@ package action.hdsdk.com.sdk.utils;
 import android.content.Context;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.WindowManager;
 
 /**
@@ -25,6 +26,16 @@ public class Utils {
         int screenWidth = dm.widthPixels;
         int screenHeight = dm.heightPixels;
         return new Point(screenWidth, screenHeight);
+    }
+
+
+    /**
+     * 打印日志
+     * @param clazz
+     * @param msg
+     */
+    public static void log(Class clazz,String msg){
+        Log.i("TAG", clazz.getSimpleName()+" --> "+msg);
     }
 
 }

@@ -1,29 +1,115 @@
 package action.hdsdk.com.sdk;
 
-import android.content.Context;
+import android.app.Activity;
+import android.widget.Toast;
 
-import action.hdsdk.com.sdk.dialog.BaseDialog;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import action.hdsdk.com.sdk.dialog.LoginDialog;
 import action.hdsdk.com.sdk.dialog.SplashDialog;
+import action.hdsdk.com.sdk.http.API;
+import action.hdsdk.com.sdk.http.HttpCallback;
+import action.hdsdk.com.sdk.http.OkHttpHelper;
+import action.hdsdk.com.sdk.listener.InitListener;
 
 /**
  * Created by xk on 2017/6/19.
  */
 public class HDSDK {
 
-    private HDSDK(){
+    static OkHttpHelper mOkHttpHelper = OkHttpHelper.getInstance(); // 网络工具类
+
+    private static boolean sInitSuccess = false; // 初始化是否成功
+    private static boolean sLoginSuccess = false; // 登录是否成功
+
+    private HDSDK() {
 
     }
 
-    public static void initialize(Context context){
+    public static void initialize(final Activity activity, final InitListener initListener) {
 
         // 显示 splash
-        SplashDialog splashDialog = new SplashDialog(context);
+        SplashDialog splashDialog = new SplashDialog(activity);
         splashDialog.show();
 
-        // 测试BaseDialog的数据
-        BaseDialog baseDialog = new BaseDialog(context);
+        // 请求初始化接口
+        mOkHttpHelper.get(API.GAME_SETTING, new HttpCallback(activity, Const.INIT_MSG) {
+            @Override
+            public void onSuccess(JSONObject json) {
+                initCallBack(activity, json, initListener, true);
+            }
+
+            @Override
+            public void onError(JSONObject json) {
+                initCallBack(activity, json, initListener, false);
+            }
+
+        });
+
+    }
 
 
+    public static void doLogin(Activity activity){
+        // 假如还没初始化则不允许登录
+        if(!sInitSuccess){
+            showErrorToast(activity,null,Const.ERROR_TIP_LOGIN);
+            return;
+        }
+
+        // 显示登录对话框
+        LoginDialog loginDialog = new LoginDialog(activity);
+        loginDialog.show();
+
+    }
+
+
+
+    /**
+     * 初始化成功的回调
+     *
+     * @param json
+     * @param initListener
+     * @param isSuccess
+     */
+    private static void initCallBack(Activity activity, JSONObject json, InitListener initListener, boolean isSuccess) {
+        if (isSuccess) {
+            try {
+                if (json.getString("code").equals("1")) {
+                    sInitSuccess = true;
+                    initListener.onInitSuccess(json);
+                } else {
+                    sInitSuccess = false;
+                    // 显示错误提示框
+                    showErrorToast(activity, json, null);
+                    initListener.onInitFail(json);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
+            sInitSuccess = false;
+            initListener.onInitFail(json);
+            // 显示初始化错误的吐司
+            showErrorToast(activity, json, null);
+        }
+    }
+
+
+    /**
+     * 显示错误的吐司,假如是有自己自定义信息的，就显示自己的定义的
+     */
+    private static void showErrorToast(Activity activity, JSONObject json, String customMsg) {
+        try {
+            if (customMsg == null || customMsg.equals("")) {
+                String msg = json.getString("message");
+                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(activity, customMsg, Toast.LENGTH_SHORT).show();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

@@ -19,6 +19,7 @@ import java.io.InputStream;
 
 import action.hdsdk.com.sdk.R;
 import action.hdsdk.com.sdk.utils.MetaDataUtils;
+import action.hdsdk.com.sdk.utils.Utils;
 
 /**
  * Created by xk on 2017/6/19.
@@ -58,7 +59,7 @@ public class SplashDialog extends Dialog {
 
         // 获取当前屏幕方向
         String hdorientation = MetaDataUtils.getApplicationMetaData(context,"hdorientation");
-        Log.i("TAG", "SplashDialog,当前屏幕方向是："+hdorientation);
+        Utils.log(SplashDialog.class,"SplashDialog,当前屏幕方向是："+hdorientation);
         // 竖屏
         if(hdorientation.equals("0")){
             initBitmap(context,"verticalSplash.png");

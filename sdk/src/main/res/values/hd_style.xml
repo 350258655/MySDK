@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="MyDialogStyle">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!-- 提示框是否有边框-->
+        <item name="android:windowFrame">@null</item>
+        <!-- 提示框是否有标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 提示框是否是浮动-->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 提示框是滞是透明的-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <!-- 是否充许对话框的背景变暗。为true则充许变暗-->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
+
+</resources>

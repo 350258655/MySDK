@@ -5,7 +5,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONObject;
+
 import action.hdsdk.com.sdk.HDSDK;
+import action.hdsdk.com.sdk.listener.InitListener;
+import action.hdsdk.com.sdk.utils.Utils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -28,15 +32,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_init:
-                HDSDK.initialize(getApplicationContext());
+                HDSDK.initialize(this,new CpInitListener());
                 break;
             case R.id.btn_login:
+                HDSDK.doLogin(this);
                 break;
             case R.id.btn_order:
                 break;
             case R.id.btn_user:
                 break;
 
+        }
+    }
+
+
+    private class CpInitListener implements InitListener{
+
+        @Override
+        public void onInitSuccess(JSONObject json) {
+            Utils.log(MainActivity.class,"初始化成功："+json);
+        }
+
+        @Override
+        public void onInitFail(JSONObject json) {
+            Utils.log(MainActivity.class,"初始化失败："+json);
         }
     }
 }
