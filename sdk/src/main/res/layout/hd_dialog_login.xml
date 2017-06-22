@@ -1,11 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@drawable/hd_corner_bg_white"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <TextView
-        android:text="要去登录了漆黑漆黑漆黑行情"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/hd_corner_bg_white"
+              android:orientation="vertical">
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="45dp"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/logo"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <action.hdsdk.com.sdk.widget.SpinnerView
+            android:id="@+id/spinner_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <EditText
+            android:id="@+id/et_pwd"
+            style="@style/myEditTextStyle"
+            android:drawableLeft="@mipmap/hd_image_icon_password"
+            android:hint="请输入密码"
+            android:inputType="textPassword"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/btn_one_key_reg"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="一键注册"
+            android:textColor="#ffffff"
+            android:background="@drawable/btn_reg"
+            android:textSize="16sp"/>
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:text="登录"
+            android:textColor="#ffffff"
+            android:background="@drawable/btn_log"
+            android:textSize="16sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/hd_login_forget_pwd_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="5dp"
+        android:gravity="right"
+        android:text="忘记密码？"
+        android:textColor="#999999"
+        android:textSize="14sp"
+        />
 </LinearLayout>

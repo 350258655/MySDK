@@ -21,6 +21,7 @@ public abstract class HttpCallback extends BaseHttpCallback {
     private String msg;
     public HttpCallback(Context context,String msg) {
         mContext = context;
+        this.msg = msg;
     }
 
     /**

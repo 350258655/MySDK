@@ -9,8 +9,14 @@ import org.json.JSONObject;
 
 import action.hdsdk.com.sdk.HDSDK;
 import action.hdsdk.com.sdk.listener.InitListener;
+import action.hdsdk.com.sdk.listener.LoginListener;
 import action.hdsdk.com.sdk.utils.Utils;
 
+/**
+ * 不足的地方：
+ *  1、有关那些像素，px，dp等等还不清楚
+ *  2、像有些图片什么的，是放在高像素级别的目录，还是低像素的目录。这是屏幕适配的问题
+ */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 HDSDK.initialize(this,new CpInitListener());
                 break;
             case R.id.btn_login:
-                HDSDK.doLogin(this);
+                HDSDK.doLogin(this,new CpLoginListener());
                 break;
             case R.id.btn_order:
                 break;
@@ -56,6 +62,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onInitFail(JSONObject json) {
             Utils.log(MainActivity.class,"初始化失败："+json);
+        }
+    }
+
+
+    private class CpLoginListener implements LoginListener{
+
+        @Override
+        public void onLoginSuccess(JSONObject json) {
+            Utils.log(MainActivity.class,"登录成功："+json);
+        }
+
+        @Override
+        public void onLoginFail(JSONObject json) {
+            Utils.log(MainActivity.class,"登录失败："+json);
         }
     }
 }

@@ -1,10 +1,14 @@
 package action.hdsdk.com.sdk.dialog;
 
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Point;
 import android.os.Build;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -36,7 +40,6 @@ public class BaseDialog extends Dialog {
 
     private void init(Context context) {
         this.mContext = context;
-
         // 无title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 全屏
@@ -50,16 +53,20 @@ public class BaseDialog extends Dialog {
             getWindow().setType(WindowManager.LayoutParams.TYPE_PHONE);
         }
 
+        // 注册广播接接收者,监听home键
+        mContext.registerReceiver(mHomeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
+
         // 设置不可以点击外部的东西
         setCanceledOnTouchOutside(false);
 
         int[] windowSize = onLayoutCallBack();
 
+
         // 设置取消事件
         setOnCancelListener(new OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialogInterface) {
-                dismiss();
+                closdDialog();
             }
         });
 
@@ -68,19 +75,19 @@ public class BaseDialog extends Dialog {
         setOnKeyListener(new OnKeyListener() {
             @Override
             public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
-                if (i == KeyEvent.KEYCODE_BACK | i == KeyEvent.KEYCODE_HOME) {
-                    dismiss();
+                if (i == KeyEvent.KEYCODE_BACK) {
+                    closdDialog();
                     // 这里应该return true的
                     return true;
                 }
                 return false;
             }
         });
+
+
     }
 
     /**
-     * 设置dialog的尺寸
-     *
      * @param view
      */
     @Override
@@ -91,7 +98,8 @@ public class BaseDialog extends Dialog {
         super.setContentView(view, params);
     }
 
-    private int[] onLayoutCallBack() {
+
+    protected int[] onLayoutCallBack() {
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         dialogWindow.setGravity(Gravity.CENTER);
@@ -107,9 +115,47 @@ public class BaseDialog extends Dialog {
 
         // 设置Window的尺寸
         lp.width = width - space;
-        lp.height = height / 2;
+        //lp.height = height / 2;
+        //lp.height = height / 2;
+        lp.height = height * 2 / 5;
         dialogWindow.setAttributes(lp);
         Utils.log(BaseDialog.class, "onLayoutCallBack,屏幕的宽：" + width + ",屏幕的高：" + height);
         return new int[]{lp.width, lp.height};
     }
+
+
+    /**
+     * 关闭对话框，并且解除广播接收者
+     */
+    private void closdDialog() {
+        if (isShowing()) {
+            dismiss();
+            mContext.unregisterReceiver(mHomeKeyEventReceiver);
+        }
+    }
+
+    /**
+     * 监听是否点击了home键将客户端推到后台
+     */
+    private BroadcastReceiver mHomeKeyEventReceiver = new BroadcastReceiver() {
+        String SYSTEM_REASON = "reason";
+        String SYSTEM_HOME_KEY = "homekey";
+        String SYSTEM_HOME_KEY_LONG = "recentapps";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS)) {
+                String reason = intent.getStringExtra(SYSTEM_REASON);
+                if (TextUtils.equals(reason, SYSTEM_HOME_KEY)) {
+                    //表示按了home键,程序到了后台
+                    Utils.log(BaseDialog.class, "监听到了home键，关闭对话框");
+                    closdDialog();
+                } else if (TextUtils.equals(reason, SYSTEM_HOME_KEY_LONG)) {
+                    //表示长按home键,显示最近使用的程序列表
+                }
+            }
+        }
+    };
+
 }

@@ -12,6 +12,8 @@ import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
 import action.hdsdk.com.sdk.listener.InitListener;
+import action.hdsdk.com.sdk.listener.LoginListener;
+import action.hdsdk.com.sdk.utils.ToastUtils;
 
 /**
  * Created by xk on 2017/6/19.
@@ -50,15 +52,15 @@ public class HDSDK {
     }
 
 
-    public static void doLogin(Activity activity){
+    public static void doLogin(Activity activity,LoginListener loginListener){
         // 假如还没初始化则不允许登录
         if(!sInitSuccess){
-            showErrorToast(activity,null,Const.ERROR_TIP_LOGIN);
+            ToastUtils.showErrorToast(activity, null, Const.ERROR_TIP_LOGIN);
             return;
         }
 
         // 显示登录对话框
-        LoginDialog loginDialog = new LoginDialog(activity);
+        LoginDialog loginDialog = new LoginDialog(activity,loginListener);
         loginDialog.show();
 
     }
@@ -81,7 +83,7 @@ public class HDSDK {
                 } else {
                     sInitSuccess = false;
                     // 显示错误提示框
-                    showErrorToast(activity, json, null);
+                    ToastUtils.showErrorToast(activity, json, null);
                     initListener.onInitFail(json);
                 }
             } catch (JSONException e) {
@@ -91,26 +93,11 @@ public class HDSDK {
             sInitSuccess = false;
             initListener.onInitFail(json);
             // 显示初始化错误的吐司
-            showErrorToast(activity, json, null);
+            ToastUtils.showErrorToast(activity, json, null);
         }
     }
 
 
-    /**
-     * 显示错误的吐司,假如是有自己自定义信息的，就显示自己的定义的
-     */
-    private static void showErrorToast(Activity activity, JSONObject json, String customMsg) {
-        try {
-            if (customMsg == null || customMsg.equals("")) {
-                String msg = json.getString("message");
-                Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(activity, customMsg, Toast.LENGTH_SHORT).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }
