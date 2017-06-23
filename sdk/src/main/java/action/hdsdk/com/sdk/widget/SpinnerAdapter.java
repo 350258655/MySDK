@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import action.hdsdk.com.sdk.R;
+import action.hdsdk.com.sdk.db.UserList;
 
 /**
  * Created by shake on 17-6-3.
@@ -67,15 +68,19 @@ public class SpinnerAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //给View设置数据
+        // 给View设置数据
         holder.tvTitle.setText(mDatas.get(position));
-        //设置删除监听事件
+        // 设置删除监听事件
         holder.ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //删除数据
+                // 删除数据
                 mDatas.remove(position);
-                //更新数据
+
+                // 而且得删除Map中的数据
+                UserList.removeUser(mDatas.get(position),mContext);
+
+                // 更新数据
                 notifyDataSetChanged();
             }
         });

@@ -19,6 +19,12 @@ public abstract class HttpCallback extends BaseHttpCallback {
 
     private Context mContext;
     private String msg;
+
+    public HttpCallback(Context context) {
+        mContext = context;
+        this.msg = "加载中";
+    }
+
     public HttpCallback(Context context,String msg) {
         mContext = context;
         this.msg = msg;

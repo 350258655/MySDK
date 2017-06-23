@@ -25,15 +25,16 @@ import java.util.List;
 import java.util.Map;
 
 import action.hdsdk.com.sdk.Const;
+import action.hdsdk.com.sdk.HDApplication;
 import action.hdsdk.com.sdk.R;
-import action.hdsdk.com.sdk.cyrpt.DES;
+
 import action.hdsdk.com.sdk.db.UserList;
 import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.BaseHttpCallback;
 import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
 import action.hdsdk.com.sdk.listener.LoginListener;
-import action.hdsdk.com.sdk.utils.BaseInfo;
+
 import action.hdsdk.com.sdk.utils.ToastUtils;
 import action.hdsdk.com.sdk.utils.Utils;
 import action.hdsdk.com.sdk.widget.SpinnerAdapter;
@@ -175,6 +176,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
             @Override
             public void onError(JSONObject json) {
                 ToastUtils.showErrorToast(mContext, json, null);
+
             }
         });
     }
@@ -190,6 +192,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
      * @param json
      */
     private void dealWithSuccess(JSONObject json, String event) {
+
         try {
             if (json.getString("code").equals("1")) {
 
@@ -247,6 +250,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
                 @Override
                 public void onError(JSONObject json) {
                     ToastUtils.showErrorToast(mContext, json, null);
+
                 }
             });
 
@@ -263,6 +267,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
      * @param json
      */
     private void dealWithlogSuccess(JSONObject json) {
+
         // 把用户信息存到本地中。因为注册和登录的，不一定是同一个玩家
         UserList.addUser(new String[]{mEt_username.getText().toString(), mEt_password.getText().toString()}, mContext);
         // 登录框消失
@@ -270,12 +275,15 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         // 回调给CP
         mLoginListener.onLoginSuccess(json);
 
+        // 保存数据
         // TODO 是否要绑定手机或者邮箱 !!!
-       // String s = DES.encryptDES(BaseInfo.getAttributesString(mContext));
         try {
-            if(json.getJSONObject("result").getString("phone").equals("null")){
-                Toast.makeText(mContext, "去绑定手机啦", Toast.LENGTH_SHORT).show();
-
+            JSONObject result = json.getJSONObject("result");
+            HDApplication.access_token = result.getString("access_token");
+            if(result.getString("phone").equals("null")){
+                //Toast.makeText(mContext, "去绑定手机啦", Toast.LENGTH_SHORT).show();
+                BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext,mEt_username.getText().toString());
+                bindMobileTipDialog.show();
             }
         } catch (JSONException e) {
             e.printStackTrace();

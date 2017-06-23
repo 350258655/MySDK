@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="action.hdsdk.com.sdk.BindPhoneActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/bind_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#313131"
+        >
+        <TextView
+            android:text="绑定"
+            android:textColor="#fff"
+            android:textSize="20sp"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_current_user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="当前帐号："/>
+
+        <EditText
+            android:layout_marginTop="10dp"
+            android:id="@+id/et_bind_phone"
+            android:hint="请输入要绑定的手机"
+            android:paddingLeft="10dp"
+            style="@style/myEditTextStyle"
+            android:inputType="phone"/>
+
+        <Button
+            android:id="@+id/btn_tonext"
+            android:layout_marginTop="10dp"
+            android:text="下一步"
+            android:textColor="#fff"
+            android:background="@drawable/btn_log"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+</LinearLayout>

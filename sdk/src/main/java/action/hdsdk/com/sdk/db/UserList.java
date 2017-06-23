@@ -31,7 +31,7 @@ public class UserList {
         Map<String, String> allUser = getAllUser(context);
 
         // 一开始并没有缓存数据的
-        if(allUser.isEmpty()){
+        if (allUser.isEmpty()) {
             return null;
         }
 
@@ -44,7 +44,7 @@ public class UserList {
 //        Double doubleUser = (Double) lastUserPsw;
 //        int intUser = (int) (doubleUser*10/10);
 
-       String password = String.valueOf(lastUserPwd);
+        String password = String.valueOf(lastUserPwd);
 
         // 创建一个字符串数据返回
         String[] lastUser = new String[]{lastUserKey, password};
@@ -65,7 +65,7 @@ public class UserList {
         String msg = PreferencesUtils.getString(context, Const.USER_LIST);
         Map<String, String> map = new HashMap<>();
         // 一开始应该是null
-        if(msg == null){
+        if (msg == null) {
             return map;
         }
 
@@ -96,16 +96,35 @@ public class UserList {
      *
      * @param user
      */
-    public static void addUser(String[] user,Context context) {
-        Map<String,String> userList = getAllUser(context);
+    public static void addUser(String[] user, Context context) {
+        Map<String, String> userList = getAllUser(context);
         // 先把最新用户标识存下去
-        userList.put(Const.LASR_USER,user[0]);
+        userList.put(Const.LASR_USER, user[0]);
         // 再把这个最新的用户存下去。存的时候拼接一些字符串，免得出错
-        userList.put(user[0],user[1]+"&hdGame");
+        userList.put(user[0], user[1] + "&hdGame");
 
         // 转换成字符串之后，存在sp中
         String userListMsg = userList.toString();
-        PreferencesUtils.putString(context,Const.USER_LIST,userListMsg);
+        PreferencesUtils.putString(context, Const.USER_LIST, userListMsg);
+    }
+
+
+    /**
+     * 删除用户
+     *
+     * @param userName
+     * @param context
+     */
+    public static void removeUser(String userName, Context context) {
+        Map<String, String> userList = getAllUser(context);
+        if (userList.containsKey(userName)) {
+            userList.remove(userName);
+
+            // 转换成字符串之后，存在sp中
+            String userListMsg = userList.toString();
+            PreferencesUtils.putString(context, Const.USER_LIST, userListMsg);
+        }
+
     }
 
 

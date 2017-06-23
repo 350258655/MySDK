@@ -15,7 +15,9 @@ import action.hdsdk.com.sdk.utils.Utils;
 /**
  * 不足的地方：
  *  1、有关那些像素，px，dp等等还不清楚
- *  2、像有些图片什么的，是放在高像素级别的目录，还是低像素的目录。这是屏幕适配的问题
+ *  2、像有些图片什么的，是放在高像素级别的目录，还是低像素的目录。这是屏幕适配的问题。因为对话框的大小，去到不同的手机，就显示不一样了
+ *      觉得应该是在那种 value中设置那种dimen吧。这个等基本功能开发完成之后，再来研究总结
+ *  3、进度对话框的问题。ProgressDialogUtils
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

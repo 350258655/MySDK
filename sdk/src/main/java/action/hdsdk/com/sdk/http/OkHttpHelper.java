@@ -60,9 +60,8 @@ public class OkHttpHelper {
      * @param callback
      */
     public void get(String url, BaseHttpCallback callback) {
-
+        // 请求网络之前，调用回调接口
         callback.onRequestBefore();
-
         // 1,构建Request对象
         Request request = buildRequest(url, null, HttpMethodType.GET);
         // 2,去请求数据
@@ -77,8 +76,8 @@ public class OkHttpHelper {
      * @param callback
      */
     public void post(String url, Map<String, Object> params, BaseHttpCallback callback) {
+        // 请求网络之前，调用回调接口
         callback.onRequestBefore();
-
         // 1,构建Request对象
         Request request = buildRequest(url, params, HttpMethodType.POST);
         // 2,去请求数据
@@ -182,7 +181,7 @@ public class OkHttpHelper {
 
 
     /**
-     * c
+     *
      *
      * @param request
      * @param e

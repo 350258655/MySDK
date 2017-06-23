@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@drawable/hd_corner_bg_white"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="用户绑定"
+            android:textColor="#000"
+            android:textSize="22sp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="温馨提示：您的帐号级别：低"
+            android:paddingTop="10dp"
+            android:textColor="#B8858B"
+            android:textSize="16sp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="10dp"
+            android:text="您尚未绑定手机，忘记密码或帐号不慎被盗时将无法找回帐号密码"
+            android:textColor="#000"
+            android:textSize="16sp"
+            />
+
+        <Button
+            android:id="@+id/btn_bind"
+            android:text="马上绑定"
+            android:textSize="16sp"
+            android:background="@drawable/btn_log"
+            android:layout_marginTop="10dp"
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"/>
+
+        <Button
+            android:id="@+id/btn_unbind"
+            android:text="暂不绑定"
+            android:textSize="16sp"
+            android:background="@drawable/btn_unbind"
+            android:textColor="#fff"
+            android:layout_width="match_parent"
+            android:layout_marginTop="10dp"
+            android:layout_height="45dp"/>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
