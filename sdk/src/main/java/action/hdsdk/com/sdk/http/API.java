@@ -27,8 +27,12 @@ public class API {
     public static final String GAME_BIND_PHONE = "http://api.hdg123.cn/index.php?r=user/binding&type=phone&game_id=585&package_id=mhzt_01";
 
     // 检查验证码
-    //public static final String GAME_CHECK_AUTHCODE = "http://api.hdg123.cn/index.php?r=user/checkresetkey&type=PHONE&resetkey=808822&game_id=571&package_id=qmsj_01";
     public static final String GAME_CHECK_AUTHCODE = "http://api.hdg123.cn/index.php?r=user/checkresetkey&type=PHONE&game_id=585&package_id=mhzt_01";
+
+    // 重新去给手机设置发送验证码
+    //public static final String CAME_RESET_KEY= "http://api.hdg123.cn/index.php?r=user/resetKey&type=USERNAME&value=D969427&game_id=585&package_id=mhzt_01";
+    public static final String CAME_RESET_KEY= "http://api.hdg123.cn/index.php?r=user/resetKey&type=USERNAME&game_id=585&package_id=mhzt_01";
+
 
 
 }

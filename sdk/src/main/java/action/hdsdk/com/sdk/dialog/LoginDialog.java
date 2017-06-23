@@ -1,6 +1,7 @@
 package action.hdsdk.com.sdk.dialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.InputType;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 import action.hdsdk.com.sdk.Const;
+import action.hdsdk.com.sdk.ForgetPsdActivity;
 import action.hdsdk.com.sdk.HDApplication;
 import action.hdsdk.com.sdk.R;
 
@@ -57,6 +59,9 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
     private String username;
     private String psw;
     private LoginListener mLoginListener;
+    private List<String> datas; // 用户名列表
+    private Map<String,String> userList; // 用户名 + 密码 的列表
+
     public LoginDialog(Context context,LoginListener loginListener) {
         super(context);
         // 先加载layout再调用 setContentView(view); 这样父类控制对话框的大小才会起作用
@@ -68,37 +73,27 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         mContext = context;
         mLoginListener = loginListener;
 
-        // 找到View
-        mBtn_login = findViewById(R.id.btn_login);
-        mBtn_reg = findViewById(R.id.btn_one_key_reg);
-        mSv_username = findViewById(R.id.spinner_view);
-        mEt_username = mSv_username.findViewById(R.id.et_input);
-        mEt_password = findViewById(R.id.et_pwd);
-        mTv_forgetPwd = findViewById(R.id.hd_login_forget_pwd_textView);
+        // 初始化View
+        initViews();
 
+        // 初始化数据
+        initDatas(context);
+
+        // 初始化事件
+        initEvents();
+
+
+    }
+
+    /**
+     * 初始化事件
+     */
+    private void initEvents() {
         // 注册监听时间
         mBtn_login.setOnClickListener(this);
         mBtn_reg.setOnClickListener(this);
         mTv_forgetPwd.setOnClickListener(this);
 
-        // 获取最新用户
-        String[] user = UserList.getFirstUser(context);
-        if(user != null){
-            Utils.log(LoginDialog.class, "最新用户是：" + user[0]);
-            mEt_username.setText(user[0]);
-            mEt_password.setText(user[1]);
-            // 显示星号
-            mEt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        }
-
-        // 设置UserList
-        final Map<String,String> userList = UserList.getUserList(context);
-        final List<String> datas = new ArrayList<>();
-        for (String userName : userList.keySet()) {
-            datas.add(userName);
-        }
-        // 设置数据
-        mSv_username.setAdapter(new SpinnerAdapter(context,datas));
         //设置点击的监听事件，监听后的操作交给用户去使用
         mSv_username.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -123,6 +118,62 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
                 mSv_username.dismiss();
             }
         });
+
+
+        // 忘记密码
+        mTv_forgetPwd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 跳转到忘记密码界面，需要携带当前的账号名过去。假如不为空才传过去，因为玩家有可能是记住了以前的帐号，但是SDK是重新安装的，所以界面是不会显示以前的账号名的
+                String user = mEt_username.getText().toString().trim();
+                Intent intent = new Intent(mContext, ForgetPsdActivity.class);
+                if(user != null && !user.equals("")){
+                    intent.putExtra(Const.CURRENT_USER, user);
+                }
+                mContext.startActivity(intent);
+
+                // 关闭当前Dialog
+                dismiss();
+            }
+        });
+    }
+
+    /**
+     * 初始化数据
+     */
+    private void initDatas(Context context) {
+        // 获取最新用户
+        String[] user = UserList.getFirstUser(context);
+        if(user != null){
+            Utils.log(LoginDialog.class, "最新用户是：" + user[0]);
+            mEt_username.setText(user[0]);
+            mEt_password.setText(user[1]);
+            // 显示星号
+            mEt_password.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        }
+
+        // 设置UserList
+        userList = UserList.getUserList(context);
+        datas = new ArrayList<>();
+        for (String userName : userList.keySet()) {
+            datas.add(userName);
+        }
+        // 设置数据
+        mSv_username.setAdapter(new SpinnerAdapter(context, datas));
+    }
+
+
+    /**
+     * 初始化View
+     */
+    private void initViews() {
+        // 找到View
+        mBtn_login = findViewById(R.id.btn_login);
+        mBtn_reg = findViewById(R.id.btn_one_key_reg);
+        mSv_username = findViewById(R.id.spinner_view);
+        mEt_username = mSv_username.findViewById(R.id.et_input);
+        mEt_password = findViewById(R.id.et_pwd);
+        mTv_forgetPwd = findViewById(R.id.hd_login_forget_pwd_textView);
     }
 
 

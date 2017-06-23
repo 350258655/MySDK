@@ -1,15 +1,11 @@
 package action.hdsdk.com.sdk;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.CountDownTimer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -22,7 +18,7 @@ import action.hdsdk.com.sdk.http.OkHttpHelper;
 import action.hdsdk.com.sdk.utils.ToastUtils;
 import action.hdsdk.com.sdk.utils.Utils;
 
-public class CheckVeryCodeActivity extends Activity {
+public class CheckVeryCodeActivity extends BaseActivity {
 
     private Toolbar mToolbar;
     private EditText mEtAuthCode;
@@ -36,11 +32,11 @@ public class CheckVeryCodeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 无title
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // 全屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
-        setContentView(R.layout.activity_reset_psd);
+//        // 无title
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        // 全屏
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+        setContentView(R.layout.activity_check_auth_code);
 
         // 初始化View
         initViews();

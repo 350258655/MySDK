@@ -10,6 +10,12 @@
         </activity>
         <activity android:name=".CheckVeryCodeActivity">
         </activity>
+        <activity android:name=".ForgetPsdActivity">
+        </activity>
+        <activity android:name=".BaseActivity">
+        </activity>
+        <activity android:name=".ResetPasswordActivity">
+        </activity>
     </application>
 
 </manifest>

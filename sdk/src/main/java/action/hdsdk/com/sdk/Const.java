@@ -36,6 +36,9 @@ public class Const {
     // 重新获取验证码
     public static final String REGET_AUTH_CODE = "reget_authcode";
 
+    // 服务端重新设置key
+    public static final String RESET_KEY = "reset_key";
+
 
 
     // 加密串

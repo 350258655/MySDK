@@ -21,7 +21,7 @@ import action.hdsdk.com.sdk.utils.FormVerifyUtils;
 import action.hdsdk.com.sdk.utils.ToastUtils;
 import action.hdsdk.com.sdk.utils.Utils;
 
-public class BindPhoneActivity extends Activity {
+public class BindPhoneActivity extends BaseActivity {
 
     private Toolbar mToolbar;
     private TextView mTv_currentUser;
@@ -33,10 +33,10 @@ public class BindPhoneActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // 无title
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        // 全屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+//        // 无title
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        // 全屏
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN | WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
         setContentView(R.layout.activity_bind_phone);
 
