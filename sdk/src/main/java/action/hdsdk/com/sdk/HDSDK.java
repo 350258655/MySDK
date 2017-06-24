@@ -6,6 +6,8 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import action.hdsdk.com.sdk.db.PreferencesUtils;
+import action.hdsdk.com.sdk.dialog.AutoLoginDialog;
 import action.hdsdk.com.sdk.dialog.LoginDialog;
 import action.hdsdk.com.sdk.dialog.SplashDialog;
 import action.hdsdk.com.sdk.http.API;
@@ -59,9 +61,28 @@ public class HDSDK {
             return;
         }
 
+        // 判断是自动登录还是普通登录
+        String accessToekn = HDApplication.access_token;
+        if(accessToekn == null || accessToekn.equals("")){
+            // 从sp中获取
+            accessToekn = PreferencesUtils.getString(activity,Const.ACCESS_TOKEN,"");
+            if(accessToekn == null || accessToekn.equals("")){
+                // 显示登录对话框
+                LoginDialog loginDialog = new LoginDialog(activity,loginListener);
+                loginDialog.show();
+            }else {
+                // 显示自动登录对话框
+                //ToastUtils.showErrorToast(HDApplication.getContext(),null,"显示自动登录对话框");
+                AutoLoginDialog autoLoginDialog = new AutoLoginDialog(activity,accessToekn,loginListener);
+                autoLoginDialog.show();
+            }
+        }
+
+
+
         // 显示登录对话框
-        LoginDialog loginDialog = new LoginDialog(activity,loginListener);
-        loginDialog.show();
+//        LoginDialog loginDialog = new LoginDialog(activity,loginListener);
+//        loginDialog.show();
 
     }
 

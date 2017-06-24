@@ -64,7 +64,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
     private Map<String,String> userList; // 用户名 + 密码 的列表
 
     public LoginDialog(Context context,LoginListener loginListener) {
-        super(context);
+        super(context,Const.LOGIN_DIALOG);
         // 先加载layout再调用 setContentView(view); 这样父类控制对话框的大小才会起作用
         View view = LayoutInflater.from(context).inflate(R.layout.hd_dialog_login, null);
         setContentView(view);

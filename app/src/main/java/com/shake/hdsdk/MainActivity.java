@@ -18,6 +18,7 @@ import action.hdsdk.com.sdk.utils.Utils;
  *  2、像有些图片什么的，是放在高像素级别的目录，还是低像素的目录。这是屏幕适配的问题。因为对话框的大小，去到不同的手机，就显示不一样了
  *      觉得应该是在那种 value中设置那种dimen吧。这个等基本功能开发完成之后，再来研究总结
  *  3、进度对话框的问题。ProgressDialogUtils
+ *  4、自动登录会出问题，怀疑原因是S不能写死
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 

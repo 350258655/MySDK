@@ -33,7 +33,8 @@ public class API {
     public static final String GAME_RESET_KEY= "http://api.hdg123.cn/index.php?r=user/resetKey&type=USERNAME&game_id=585&package_id=mhzt_01";
 
     // 重置密码
-   // public static final String GAME_RESET_PSD = "http://api.hdg123.cn/index.php?r=user/resetPassword&value=18102540021&type=phone&reset_key=969427&new_password=125863&game_id=571&package_id=qmsj_01";
     public static final String GAME_RESET_PSD = "http://api.hdg123.cn/index.php?r=user/resetPassword&type=phone&game_id=585&package_id=mhzt_01";
 
+    // 自动登录
+    public static final String GAME_AUTO_LOGIN = "http://api.hdg123.cn/index.php?r=auth/checkaccesstoken&game_id=585&package_id=mhzt_01";
 }

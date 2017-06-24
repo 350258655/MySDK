@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
+import action.hdsdk.com.sdk.Const;
 import action.hdsdk.com.sdk.utils.Utils;
 
 /**
@@ -26,20 +27,22 @@ import action.hdsdk.com.sdk.utils.Utils;
 public class BaseDialog extends Dialog {
 
     private Context mContext;
+    private String mEvent;
 
-    public BaseDialog(Context context) {
+    public BaseDialog(Context context,String event) {
         super(context);
-        init(context);
+        init(context, event);
     }
 
 
-    public BaseDialog(Context context, int themeResId) {
+    public BaseDialog(Context context, int themeResId,String event) {
         super(context, themeResId);
-        init(context);
+        init(context, event);
     }
 
-    private void init(Context context) {
+    private void init(Context context,String event) {
         this.mContext = context;
+        this.mEvent = event;
         // 无title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 全屏
@@ -117,7 +120,13 @@ public class BaseDialog extends Dialog {
         lp.width = width - space;
         //lp.height = height / 2;
         //lp.height = height / 2;
-        lp.height = height * 2 / 5;
+
+        // 自动登录框高度小一点
+        if(mEvent == Const.AUTO_LOGIN_DIALOG){
+            lp.height = height / 3;
+        }else {
+            lp.height = height * 2 / 5;
+        }
         dialogWindow.setAttributes(lp);
         Utils.log(BaseDialog.class, "onLayoutCallBack,屏幕的宽：" + width + ",屏幕的高：" + height);
         return new int[]{lp.width, lp.height};

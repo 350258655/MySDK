@@ -23,7 +23,7 @@ public class BindMobileTipDialog extends BaseDialog {
 
 
     public BindMobileTipDialog(final Context context, final String userName) {
-        super(context);
+        super(context,Const.BIND_PHONE_DIALOG);
         View view = LayoutInflater.from(context).inflate(R.layout.hd_dialog_bind_mobile_tip,null);
         setContentView(view);
 
