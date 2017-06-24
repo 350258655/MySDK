@@ -77,6 +77,9 @@ public class ForgetPsdActivity extends BaseActivity {
                     intent.putExtra(Const.PHONE,phone);
                     startActivity(intent);
 
+                    // 把当前的Activity添加到集合中
+                    HDApplication.getInstance().addActivity(ForgetPsdActivity.this);
+
                 }else {
                     ToastUtils.showErrorToast(HDApplication.getContext(),null,"请输入正确的手机号码！");
                 }

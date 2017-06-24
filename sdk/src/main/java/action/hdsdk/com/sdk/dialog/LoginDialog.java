@@ -30,6 +30,7 @@ import action.hdsdk.com.sdk.ForgetPsdActivity;
 import action.hdsdk.com.sdk.HDApplication;
 import action.hdsdk.com.sdk.R;
 
+import action.hdsdk.com.sdk.db.PreferencesUtils;
 import action.hdsdk.com.sdk.db.UserList;
 import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.BaseHttpCallback;
@@ -330,7 +331,10 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         // TODO 是否要绑定手机或者邮箱 !!!
         try {
             JSONObject result = json.getJSONObject("result");
+            // 顺便存进SP中
             HDApplication.access_token = result.getString("access_token");
+            PreferencesUtils.putString(mContext,Const.ACCESS_TOKEN,HDApplication.access_token);
+
             if(result.getString("phone").equals("null")){
                 //Toast.makeText(mContext, "去绑定手机啦", Toast.LENGTH_SHORT).show();
                 BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext,mEt_username.getText().toString());

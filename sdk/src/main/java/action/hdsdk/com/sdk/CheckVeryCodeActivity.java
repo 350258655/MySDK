@@ -203,7 +203,7 @@ public class CheckVeryCodeActivity extends BaseActivity {
      */
     private void dealWithBindSuccess(JSONObject json) {
 
-        ToastUtils.showErrorToast(HDApplication.getContext(), null, "绑定验证码成功！");
+        ToastUtils.showErrorToast(HDApplication.getContext(), null, "绑定手机成功！");
 
         // 关闭当前Activity，和绑定手机界面的那个Activity
         finish();

@@ -38,4 +38,51 @@ public class FormVerifyUtils {
             return false;
         }
     }
+
+
+
+    /**
+     * 此方法判断输入字符是否为数字0-9 是返回true不是返回false
+     *
+     * @param c char
+     * @return boolean
+     */
+    public static boolean isDigit(char c) {
+        return (('0' <= c) && (c <= '9'));
+    }
+
+
+    /**
+     * 此方法判断输入字符是否为字母a-z或A-Z 是返回true不是返回false
+     *
+     * @param c char
+     * @return boolean
+     */
+    public static boolean isAlpha(char c) {
+        return ((('a' <= c) && (c <= 'z')) || (('A' <= c) && (c <= 'Z')));
+    }
+
+    /**
+     * 此方法用于检查密码或用户名是否合法，用户名密码只能使用英文字母、数字
+     *
+     * @param inputStr 输入
+     * @return boolean
+     */
+    public static boolean checkUserNamePassword(String inputStr) {
+
+        // 先校验长度
+        if (StringUtils.isEmpty(inputStr) || inputStr.length() < 6 || inputStr.length() > 30) {
+            return  false;
+        }
+
+        // 再校验是否是只含有字母和数字
+        for (int nIndex = 0; nIndex < inputStr.length(); nIndex++) {
+            char cCheck = inputStr.charAt(nIndex);
+
+            if (!(isDigit(cCheck) || isAlpha(cCheck))) {
+                return false;
+            }
+        }
+        return true;
+    }
 }
