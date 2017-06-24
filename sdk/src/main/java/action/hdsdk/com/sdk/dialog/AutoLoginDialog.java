@@ -47,6 +47,9 @@ public class AutoLoginDialog extends BaseDialog {
             try {
                 // 此对话框消失
                 dismiss();
+
+                // TODO 显示悬浮窗
+
                 // 回调登录成功
                 String jsonString = msg.getData().getString(Const.AUTO_LOGIN_CALLBACK);
                 mLoginListener.onLoginSuccess(new JSONObject(jsonString));

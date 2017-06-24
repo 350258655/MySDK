@@ -327,6 +327,9 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         // 回调给CP
         mLoginListener.onLoginSuccess(json);
 
+        // TODO 显示悬浮窗
+
+
         // 保存数据
         // TODO 是否要绑定手机或者邮箱 !!!
         try {

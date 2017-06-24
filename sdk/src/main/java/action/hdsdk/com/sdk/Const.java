@@ -11,6 +11,7 @@ public class Const {
 
 
     public static final String ERROR_TIP_LOGIN = "初始化失败，无法登录 !";
+    public static final String ERROR_TIP_PAY = "初始化失败，无法支付 !";
 
 
     public static final String EVENT_LOGIN = "login";
@@ -49,9 +50,20 @@ public class Const {
     public static final String LOGIN_DIALOG = "login_dialog";
     public static final String AUTO_LOGIN_DIALOG = "auto_login_dialog";
     public static final String BIND_PHONE_DIALOG = "bind_phone_dialog";
+    public static final String ORDER_DIALOG = "order_dialog";
 
     // 自动登录返回数据
     public static final String AUTO_LOGIN_CALLBACK = "auto_login_callback";
+
+    /**
+     * 微信支付渠道
+     */
+    public static final String CHANNEL_WECHAT = "wx";
+    /**
+     * 支付支付渠道
+     */
+    public static final String CHANNEL_ALIPAY = "alipay";
+
 
 
     // 加密串

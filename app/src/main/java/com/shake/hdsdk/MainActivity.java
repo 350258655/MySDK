@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import action.hdsdk.com.sdk.HDSDK;
 import action.hdsdk.com.sdk.listener.InitListener;
 import action.hdsdk.com.sdk.listener.LoginListener;
+import action.hdsdk.com.sdk.listener.PayListener;
 import action.hdsdk.com.sdk.utils.Utils;
 
 /**
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 HDSDK.doLogin(this,new CpLoginListener());
                 break;
             case R.id.btn_order:
+                HDSDK.doPay(this,new CpOrderListener());
                 break;
             case R.id.btn_user:
                 break;
@@ -79,6 +81,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onLoginFail(JSONObject json) {
             Utils.log(MainActivity.class,"登录失败："+json);
+        }
+    }
+
+    private class CpOrderListener implements PayListener{
+
+        @Override
+        public void onPaySuccess(JSONObject json) {
+            Utils.log(MainActivity.class,"支付成功："+json);
+        }
+
+        @Override
+        public void onPayFail(JSONObject json) {
+            Utils.log(MainActivity.class,"支付失败："+json);
         }
     }
 }

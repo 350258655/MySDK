@@ -124,7 +124,10 @@ public class BaseDialog extends Dialog {
         // 自动登录框高度小一点
         if(mEvent == Const.AUTO_LOGIN_DIALOG){
             lp.height = height / 3;
-        }else {
+        }else if(mEvent == Const.ORDER_DIALOG){
+          // 支付框的高度大一点
+            lp.height = height / 2;
+        } else {
             lp.height = height * 2 / 5;
         }
         dialogWindow.setAttributes(lp);
