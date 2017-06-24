@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -65,7 +66,7 @@ public class ResetPasswordActivity extends BaseActivity {
 
         // 去调用服务端接口重新发验证码
         String url = API.CAME_RESET_KEY + "&value="+userName;
-        Utils.log(ResetPasswordActivity.class,"resetkey的url："+url);
+        Utils.log(ResetPasswordActivity.class, "resetkey的url：" + url);
         mOkHttpHelper.get(url, new HttpCallback(ResetPasswordActivity.this) {
             @Override
             public void onSuccess(JSONObject json) {
@@ -80,7 +81,12 @@ public class ResetPasswordActivity extends BaseActivity {
 
 
         // 重置密码的按钮
+        mBtnRegetAuthCode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
 
 
     }
