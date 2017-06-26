@@ -50,6 +50,7 @@ public class AutoLoginDialog extends BaseDialog {
 
                 // TODO 显示悬浮窗
 
+
                 // 回调登录成功
                 String jsonString = msg.getData().getString(Const.AUTO_LOGIN_CALLBACK);
                 mLoginListener.onLoginSuccess(new JSONObject(jsonString));
@@ -128,6 +129,13 @@ public class AutoLoginDialog extends BaseDialog {
     private void dealWithSuccess(JSONObject json) {
         try {
             if(json.getString("code").equals("1")){
+
+                // 重新更新access_token
+                JSONObject result = json.getJSONObject("result");
+                String access_token = result.getString("access_token");
+                HDApplication.access_token = access_token;
+                PreferencesUtils.putString(mContext,Const.ACCESS_TOKEN,HDApplication.access_token);
+
 
                 // 3秒之后再回调成功，并且让对话框消失
                 Message message = mHandler.obtainMessage();

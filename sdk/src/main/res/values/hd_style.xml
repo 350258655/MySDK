@@ -37,6 +37,13 @@
         <item name="android:layout_height">1dp</item>
     </style>
 
+    <!-- 横分割线-->
+    <style name="line_gray_vertical">
+        <item name="android:background">#E7E7E7</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
     <!-- 多选按钮-->
     <style name="radioButton">
         <item name="android:background">@drawable/selector_checkbox_green</item>

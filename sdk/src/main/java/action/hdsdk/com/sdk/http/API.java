@@ -37,4 +37,15 @@ public class API {
 
     // 自动登录
     public static final String GAME_AUTO_LOGIN = "http://api.hdg123.cn/index.php?r=auth/checkaccesstoken&game_id=585&package_id=mhzt_01";
+
+    // 创建订单
+    public static final String GAME_CREATE_ORDER = "http://api.hdg123.cn/index.php?r=order/create";
+
+    // 检查订单
+    public static final String GAME_CHECK_ORDER = "http://api.hdg123.cn/index.php?r=order/check&game_id=585&package_id=mhzt_01";
+
+    // 请求微信支付的参数
+    //public static final String GAME_GET_WECHAT_PARAMS = "http://api.hdg123.cn/index.php?r=order/paylink&payment=wftwx&order_no=5950a95bed011&type=android&game_id=571&package_id=qmsj_01";
+    public static final String GAME_GET_WECHAT_PARAMS = "http://api.hdg123.cn/index.php?r=order/paylink&payment=wftwx&type=android&game_id=585&package_id=mhzt_01";
+
 }

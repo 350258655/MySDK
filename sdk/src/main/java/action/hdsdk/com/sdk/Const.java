@@ -55,6 +55,24 @@ public class Const {
     // 自动登录返回数据
     public static final String AUTO_LOGIN_CALLBACK = "auto_login_callback";
 
+    // 创建订单
+    public static final String CREATE_ORDER = "create_order";
+
+    // 检查订单
+    public static final String CHECK_ORDER = "check_order";
+
+    // 获取微信支付的参数
+    public static final String GET_WX_PARAMS = "get_wx_params";
+
+    // 微信支付回调
+    public static final String PAY_SUCCESS = "pay_success";
+    public static final String PAY_FAIL = "pay_fail";
+    public static final String SUCCESS  = "success";
+    public static final String FAIL = "fail";
+    public static final String ACTION_PAY = "action_pay";
+
+
+
     /**
      * 微信支付渠道
      */

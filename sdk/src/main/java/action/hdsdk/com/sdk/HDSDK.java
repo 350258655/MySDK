@@ -1,6 +1,7 @@
 package action.hdsdk.com.sdk;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -100,7 +101,7 @@ public class HDSDK {
      * @param activity
      * @param payListener
      */
-    public static void doPay(Activity activity, PayListener payListener) {
+    public static void doPay(Activity activity, PayListener payListener,String productName,double amount,String notifyUrl,String exOrderNum,String roleId,String serverId,String exInfo,String productInfo) {
 
         // 假如还没初始化则不允许支付
         if (!sInitSuccess) {
@@ -109,9 +110,11 @@ public class HDSDK {
         }
 
 
-        OrderDialog orderDialog = new OrderDialog(activity,payListener,"测试",0.01);
+        OrderDialog orderDialog = new OrderDialog(activity,payListener,productName,amount,notifyUrl,exOrderNum,roleId,serverId,exInfo,productInfo);
         orderDialog.show();
 
+//        Intent intent = new Intent(activity,OrderActivity.class);
+//        activity.startActivity(intent);
 
     }
 

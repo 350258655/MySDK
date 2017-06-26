@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 HDSDK.doLogin(this,new CpLoginListener());
                 break;
             case R.id.btn_order:
-                HDSDK.doPay(this,new CpOrderListener());
+                HDSDK.doPay(this,new CpOrderListener(),"测试",0.01,"http://callback","外部订单","角色ID","区服ID","扩展信息","产品描述");
                 break;
             case R.id.btn_user:
                 break;
