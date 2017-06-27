@@ -23,6 +23,7 @@ import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
 import action.hdsdk.com.sdk.listener.InitListener;
 import action.hdsdk.com.sdk.listener.LoginListener;
+import action.hdsdk.com.sdk.listener.LogoutListener;
 import action.hdsdk.com.sdk.listener.PayListener;
 import action.hdsdk.com.sdk.utils.ToastUtils;
 import action.hdsdk.com.sdk.widget.FloatViewService;
@@ -36,9 +37,11 @@ public class HDSDK {
 
     private static FloatViewService mFloatViewService;
     private static IsLoginReceiver mIsLoginReceiver;
+    private static LogoutReceiver sLogoutReceiver;
 
     private static boolean sInitSuccess = false; // 初始化是否成功
     private static boolean sLoginSuccess = false; // 登录是否成功
+    private static boolean sIsLogout = false;
 
     private HDSDK() {
 
@@ -54,10 +57,11 @@ public class HDSDK {
         // 绑定服务
         activity.bindService(new Intent(activity, FloatViewService.class), mConnection, Context.BIND_AUTO_CREATE);
 
-        // 注册广播接收者
+        // 注册广播接收者检测是否登录
         mIsLoginReceiver = new IsLoginReceiver();
         activity.registerReceiver(mIsLoginReceiver, new IntentFilter(Const.ACTION_LOGIN_STATE));
-
+        // 注册广播接收者检测是否注销
+        activity.registerReceiver(sLogoutReceiver,new IntentFilter(Const.ACTION_LOGOUT));
         // 请求初始化接口
         mOkHttpHelper.get(API.GAME_SETTING, new HttpCallback(activity, Const.INIT_MSG) {
             @Override
@@ -121,7 +125,7 @@ public class HDSDK {
      */
     public static void doPay(Activity activity, PayListener payListener, String productName, double amount, String notifyUrl, String exOrderNum, String roleId, String serverId, String exInfo, String productInfo) {
 
-        // 假如还没初始化则不允许支付
+        // 假如还没登录则不允许支付
         if (!sLoginSuccess) {
             ToastUtils.showErrorToast(activity, null, Const.ERROR_TIP_PAY);
             return;
@@ -134,6 +138,13 @@ public class HDSDK {
 //        Intent intent = new Intent(activity,OrderActivity.class);
 //        activity.startActivity(intent);
 
+    }
+
+
+    public static void setLogoutListener(LogoutListener listener){
+        if(sIsLogout){
+            listener.onLogout();
+        }
     }
 
     public static void onResume(Activity activity) {
@@ -213,6 +224,13 @@ public class HDSDK {
                 mFloatViewService.hideFloatView();
             }
 
+        }
+    }
+
+    private static class LogoutReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+                sIsLogout = true;
         }
     }
 

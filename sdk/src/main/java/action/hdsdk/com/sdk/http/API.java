@@ -45,7 +45,10 @@ public class API {
     public static final String GAME_CHECK_ORDER = "http://api.hdg123.cn/index.php?r=order/check&game_id=585&package_id=mhzt_01";
 
     // 请求微信支付的参数
-    //public static final String GAME_GET_WECHAT_PARAMS = "http://api.hdg123.cn/index.php?r=order/paylink&payment=wftwx&order_no=5950a95bed011&type=android&game_id=571&package_id=qmsj_01";
     public static final String GAME_GET_WECHAT_PARAMS = "http://api.hdg123.cn/index.php?r=order/paylink&payment=wftwx&type=android&game_id=585&package_id=mhzt_01";
+
+    // 修改密码
+    public static final String GAME_UPDATE_PSD = "http://api.hdg123.cn/index.php?r=user/changepassword&game_id=585&package_id=mhzt_01";
+   // public static final String GAME_UPDATE_PSD = "http://api.hdg123.cn/index.php?r=user/changepassword&old_password=441456&new_password=123456&game_id=571&package_id=qmsj_01";
 
 }

@@ -20,6 +20,12 @@
         </activity>
         <activity android:name=".OrderActivity">
         </activity>
+        <activity android:name=".UserCenterActivity">
+        </activity>
+        <activity android:name=".ChangePsdActivity">
+        </activity>
+        <activity android:name=".CSCenterActivity">
+        </activity>
     </application>
 
 </manifest>

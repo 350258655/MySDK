@@ -1,5 +1,6 @@
 package com.shake.hdsdk;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -8,8 +9,10 @@ import android.widget.Button;
 import org.json.JSONObject;
 
 import action.hdsdk.com.sdk.HDSDK;
+import action.hdsdk.com.sdk.UserCenterActivity;
 import action.hdsdk.com.sdk.listener.InitListener;
 import action.hdsdk.com.sdk.listener.LoginListener;
+import action.hdsdk.com.sdk.listener.LogoutListener;
 import action.hdsdk.com.sdk.listener.PayListener;
 import action.hdsdk.com.sdk.utils.Utils;
 
@@ -30,12 +33,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Button btn_init = (Button) findViewById(R.id.btn_init);
         Button btn_login = (Button) findViewById(R.id.btn_login);
         Button btn_order = (Button) findViewById(R.id.btn_order);
-        Button btn_user = (Button) findViewById(R.id.btn_user);
+        Button btn_user = (Button) findViewById(R.id.btn_exit);
 
         btn_init.setOnClickListener(this);
         btn_login.setOnClickListener(this);
         btn_order.setOnClickListener(this);
         btn_user.setOnClickListener(this);
+
+        // 设置注销事件
+        HDSDK.setLogoutListener(new LogoutListener() {
+            @Override
+            public void onLogout() {
+                Utils.log(MainActivity.class,"用户注销");
+            }
+        });
     }
 
     @Override
@@ -50,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_order:
                 HDSDK.doPay(this,new CpOrderListener(),"测试",0.01,"http://callback","外部订单","角色ID","区服ID","扩展信息","产品描述");
                 break;
-            case R.id.btn_user:
+            case R.id.btn_exit:
+                startActivity(new Intent(MainActivity.this, UserCenterActivity.class));
                 break;
 
         }

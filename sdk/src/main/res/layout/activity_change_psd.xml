@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="action.hdsdk.com.sdk.ChangePsdActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/resetpwd_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#313131"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="重置密码"
+            android:textColor="#fff"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_user"
+            android:text="当前帐号"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:paddingLeft="@dimen/x10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_margin="10dp"
+        android:paddingLeft="@dimen/x10"
+        android:id="@+id/et_oldpsd"
+        style="@style/myEditTextStyle"
+        android:hint="请输入旧密码"/>
+
+    <EditText
+        android:layout_marginTop="@dimen/x10"
+        android:layout_margin="10dp"
+        android:paddingLeft="@dimen/x10"
+        android:id="@+id/et_newpsd"
+        style="@style/myEditTextStyle"
+        android:hint="请输入新密码(只限数字和字母)"/>
+    <Button
+        android:layout_marginTop="@dimen/x10"
+        android:paddingLeft="@dimen/x10"
+        android:paddingRight="@dimen/x10"
+        android:id="@+id/btn_reset"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="重置密码"
+        android:textColor="#fff"
+        android:layout_margin="10dp"
+        android:textSize="16sp"
+        android:background="@drawable/btn_log"/>
+
+
+</LinearLayout>

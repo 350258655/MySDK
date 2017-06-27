@@ -108,6 +108,25 @@ public class UserList {
         PreferencesUtils.putString(context, Const.USER_LIST, userListMsg);
     }
 
+    /**
+     * 更新用户
+     *
+     * @param user
+     */
+    public static void updateUser(String[] user, Context context) {
+        Map<String, String> userList = getAllUser(context);
+
+        // 直接更新
+        userList.put(user[0], user[1] + "&hdGame");
+
+        // 转换成字符串之后，存在sp中
+        String userListMsg = userList.toString();
+        PreferencesUtils.putString(context, Const.USER_LIST, userListMsg);
+    }
+
+
+
+
 
     /**
      * 删除用户

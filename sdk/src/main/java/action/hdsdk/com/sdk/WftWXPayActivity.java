@@ -11,7 +11,7 @@ import com.switfpass.pay.MainApplication;
 import com.switfpass.pay.activity.PayPlugin;
 import com.switfpass.pay.bean.RequestMsg;
 
-import action.hdsdk.com.sdk.listener.WxPayListener;
+
 
 public class WftWXPayActivity extends Activity {
 

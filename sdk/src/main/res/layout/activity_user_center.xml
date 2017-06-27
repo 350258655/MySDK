@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FEFEFE"
+    tools:context="action.hdsdk.com.sdk.UserCenterActivity">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/usercenter_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="#313131"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:text="个人中心"
+            android:textColor="#fff"
+            android:textSize="20sp"/>
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:layout_below="@+id/usercenter_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/ll_user"
+        android:orientation="vertical"
+        android:padding="@dimen/x16">
+        <TextView
+            android:id="@+id/tv_user"
+            android:text="帐号"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_below="@+id/ll_user"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="@dimen/x10"
+        android:layout_marginRight="@dimen/x10"
+        android:background="@drawable/usercenter_bg">
+        <TextView
+            android:id="@+id/tv_change_word"
+            android:text="修改密码"
+            android:paddingLeft="@dimen/x10"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <View
+            android:layout_marginTop="@dimen/x10"
+            style="@style/line_usercenter_vertical"
+            />
+
+
+        <TextView
+            android:layout_marginTop="@dimen/x5"
+            android:paddingLeft="@dimen/x10"
+            android:id="@+id/tv_user_bind"
+            android:text="用户绑定"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <View
+            android:layout_marginTop="@dimen/x10"
+            style="@style/line_usercenter_vertical"
+            />
+
+        <TextView
+            android:layout_marginTop="@dimen/x5"
+            android:paddingLeft="@dimen/x10"
+            android:id="@+id/tv_cs_center"
+            android:text="客服中心"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="切换帐号"
+        android:textColor="#fff"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="@dimen/x20"
+        android:textSize="16sp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/btn_log"/>
+
+
+</RelativeLayout>

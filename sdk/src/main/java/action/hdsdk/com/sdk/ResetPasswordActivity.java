@@ -17,6 +17,7 @@ import action.hdsdk.com.sdk.Const;
 import action.hdsdk.com.sdk.HDApplication;
 import action.hdsdk.com.sdk.R;
 import action.hdsdk.com.sdk.db.PreferencesUtils;
+import action.hdsdk.com.sdk.db.UserList;
 import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
@@ -217,6 +218,16 @@ public class ResetPasswordActivity extends BaseActivity {
      */
     private void dealWithResetPsdSuccess() {
         ToastUtils.showErrorToast(HDApplication.getContext(),null,"重置成功！");
+
+        // 清除token
+        HDApplication.access_token = "";
+        PreferencesUtils.putString(HDApplication.getContext(),Const.ACCESS_TOKEN,"");
+
+        // 更新用户的密码
+        String[] userData = new String[]{userName,mEtNewPsd.getText().toString().trim()};
+        UserList.updateUser(userData, HDApplication.getContext());
+
+        // 结束当前页面
         finish();
         HDApplication.getInstance().finishActivity();
     }

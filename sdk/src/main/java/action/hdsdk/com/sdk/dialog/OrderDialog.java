@@ -49,7 +49,7 @@ import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
 import action.hdsdk.com.sdk.listener.PayListener;
-import action.hdsdk.com.sdk.listener.WxPayListener;
+
 import action.hdsdk.com.sdk.utils.ToastUtils;
 import action.hdsdk.com.sdk.utils.Utils;
 import dalvik.system.DexClassLoader;

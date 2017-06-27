@@ -22,6 +22,9 @@ public class Const {
     public static final String USER_LIST = "userlist";
     public static final String LASR_USER = "last";
 
+    // 绑定手机的用户集合
+    public static final String BIND_PHONE_USER = "bind_phone_user";
+
     // 当前帐号
     public static final String CURRENT_USER = "current_user";
 
@@ -76,6 +79,11 @@ public class Const {
     public static final String ACTION_LOGIN_STATE = "login_state";
     public static final String ISLOGIN = "islogin";
     public static final String ISNOTLOGIN = "isnotlogin";
+
+
+    // 是否是注销
+    public static final String ACTION_LOGOUT = "action_logout";
+
 
 
     /**

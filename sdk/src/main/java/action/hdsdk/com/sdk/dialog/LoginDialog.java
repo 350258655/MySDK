@@ -30,6 +30,7 @@ import action.hdsdk.com.sdk.ForgetPsdActivity;
 import action.hdsdk.com.sdk.HDApplication;
 import action.hdsdk.com.sdk.R;
 
+import action.hdsdk.com.sdk.db.BindPhoneUser;
 import action.hdsdk.com.sdk.db.PreferencesUtils;
 import action.hdsdk.com.sdk.db.UserList;
 import action.hdsdk.com.sdk.http.API;
@@ -361,10 +362,14 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
             HDApplication.access_token = result.getString("access_token");
             PreferencesUtils.putString(mContext, Const.ACCESS_TOKEN, HDApplication.access_token);
 
-            if (result.getString("phone").equals("null")) {
+            // 是否有绑定手机
+            String phone = result.getString("phone");
+            if (phone.equals("null")) {
                 //Toast.makeText(mContext, "去绑定手机啦", Toast.LENGTH_SHORT).show();
-                BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext, mEt_username.getText().toString());
+                BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext, username);
                 bindMobileTipDialog.show();
+            }else {
+                BindPhoneUser.addBindUser(username,phone);
             }
         } catch (JSONException e) {
             e.printStackTrace();

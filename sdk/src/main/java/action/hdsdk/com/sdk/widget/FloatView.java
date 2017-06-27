@@ -1,6 +1,7 @@
 package action.hdsdk.com.sdk.widget;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.os.Build;
@@ -27,7 +28,9 @@ import android.widget.Toast;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import action.hdsdk.com.sdk.CSCenterActivity;
 import action.hdsdk.com.sdk.R;
+import action.hdsdk.com.sdk.UserCenterActivity;
 
 /**
  * Created by shake on 2017/6/12 0012.
@@ -174,8 +177,10 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
             public void onClick(View v) {
                 // 隐藏菜单
                 mLlFloatMenu.setVisibility(GONE);
-                //TODO 打开个人中心
-                Toast.makeText(mContext, "个人中心", Toast.LENGTH_SHORT).show();
+                // 打开个人中心
+                Intent intent = new Intent(mContext, UserCenterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                mContext.startActivity(intent);
             }
         });
         mTvFeedback.setOnClickListener(new OnClickListener() {
@@ -183,8 +188,10 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
             public void onClick(View v) {
                 // 隐藏菜单
                 mLlFloatMenu.setVisibility(GONE);
-                //TODO 打开客服界面
-                Toast.makeText(mContext, "客服", Toast.LENGTH_SHORT).show();
+                // 打开客服界面
+                Intent intent = new Intent(mContext, CSCenterActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+                mContext.startActivity(intent);
             }
         });
         // 设置整个View的触摸事件

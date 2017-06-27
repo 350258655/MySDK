@@ -16,7 +16,9 @@ import org.json.JSONObject;
 import action.hdsdk.com.sdk.Const;
 import action.hdsdk.com.sdk.HDApplication;
 import action.hdsdk.com.sdk.R;
+import action.hdsdk.com.sdk.db.BindPhoneUser;
 import action.hdsdk.com.sdk.db.PreferencesUtils;
+import action.hdsdk.com.sdk.db.UserList;
 import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
@@ -53,10 +55,22 @@ public class AutoLoginDialog extends BaseDialog {
 
                 // 回调登录成功
                 String jsonString = msg.getData().getString(Const.AUTO_LOGIN_CALLBACK);
+                JSONObject json = new JSONObject(jsonString);
                 mLoginListener.onLoginSuccess(new JSONObject(jsonString));
 
-                // 显示对话框
-                //mFloatViewService.showFloatView();
+                // 获取用户名
+                String userName  = UserList.getFirstUser(HDApplication.getContext())[0];
+
+                JSONObject result = json.getJSONObject("result");
+                // 是否有绑定手机
+                String phone = result.getString("phone");
+                if (phone.equals("null")) {
+                    //Toast.makeText(mContext, "去绑定手机啦", Toast.LENGTH_SHORT).show();
+                    BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext, userName);
+                    bindMobileTipDialog.show();
+                }else {
+                    BindPhoneUser.addBindUser(userName, phone);
+                }
 
                 // 发送登录成功的广播
                 sendSuccessBroadcast();
