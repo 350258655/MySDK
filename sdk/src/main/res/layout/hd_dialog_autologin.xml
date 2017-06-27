@@ -5,16 +5,52 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <!--<RelativeLayout-->
+        <!--android:id="@+id/rl"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="45dp"-->
+        <!-->-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="10dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:src="@mipmap/logo"/>-->
+    <!--</RelativeLayout>-->
+
+    <!--<TextView-->
+        <!--android:text="正在进入游戏..."-->
+        <!--android:textColor="#000"-->
+        <!--android:textSize="25sp"-->
+        <!--android:textStyle="bold"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_centerHorizontal="true"/>-->
+
+    <!--<Button-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginBottom="20dp"-->
+        <!--android:id="@+id/btn_logout"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_height="45dp"-->
+        <!--android:text="切换帐号"-->
+        <!--android:textSize="16sp"-->
+        <!--android:textColor="#fff"-->
+        <!--android:background="@drawable/btn_log"/>-->
+
     <RelativeLayout
         android:id="@+id/rl"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/x45"
         >
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/x10"
             android:layout_centerVertical="true"
             android:src="@mipmap/logo"/>
     </RelativeLayout>
@@ -31,11 +67,11 @@
 
     <Button
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="@dimen/x20"
         android:id="@+id/btn_logout"
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/x45"
         android:text="切换帐号"
         android:textSize="16sp"
         android:textColor="#fff"

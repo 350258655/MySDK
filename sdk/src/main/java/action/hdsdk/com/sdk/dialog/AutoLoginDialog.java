@@ -1,6 +1,7 @@
 package action.hdsdk.com.sdk.dialog;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import action.hdsdk.com.sdk.http.OkHttpHelper;
 import action.hdsdk.com.sdk.listener.LoginListener;
 import action.hdsdk.com.sdk.utils.ToastUtils;
 import action.hdsdk.com.sdk.utils.Utils;
+import action.hdsdk.com.sdk.widget.FloatViewService;
 
 /**
  * Created by shake on 2017/6/24 0024.
@@ -35,6 +37,7 @@ public class AutoLoginDialog extends BaseDialog {
     private OkHttpHelper mOkHttpHelper;
     private Button mBtn_logout;
     private boolean isLogout; // 是否要注销用户
+    private FloatViewService mFloatViewService;
 
 
     private Handler mHandler = new Handler(){
@@ -48,12 +51,15 @@ public class AutoLoginDialog extends BaseDialog {
                 // 此对话框消失
                 dismiss();
 
-                // TODO 显示悬浮窗
-
-
                 // 回调登录成功
                 String jsonString = msg.getData().getString(Const.AUTO_LOGIN_CALLBACK);
                 mLoginListener.onLoginSuccess(new JSONObject(jsonString));
+
+                // 显示对话框
+                //mFloatViewService.showFloatView();
+
+                // 发送登录成功的广播
+                sendSuccessBroadcast();
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -61,12 +67,13 @@ public class AutoLoginDialog extends BaseDialog {
     };
 
 
-    public AutoLoginDialog(Context context, String accessToken, LoginListener loginListener) {
+    public AutoLoginDialog(Context context, String accessToken, LoginListener loginListener,FloatViewService floatViewService) {
         super(context, Const.AUTO_LOGIN_DIALOG);
         mAccessToken = accessToken;
         mContext = context;
         mLoginListener = loginListener;
         mOkHttpHelper = OkHttpHelper.getInstance();
+        mFloatViewService = floatViewService;
 
         View view = LayoutInflater.from(context).inflate(R.layout.hd_dialog_autologin, null);
         setContentView(view);
@@ -112,7 +119,7 @@ public class AutoLoginDialog extends BaseDialog {
                 PreferencesUtils.putString(HDApplication.getContext(),Const.ACCESS_TOKEN,"");
 
                 // 显示登录对话框
-                LoginDialog loginDialog = new LoginDialog(mContext,mLoginListener);
+                LoginDialog loginDialog = new LoginDialog(mContext,mLoginListener,mFloatViewService);
                 loginDialog.show();
 
             }
@@ -150,12 +157,34 @@ public class AutoLoginDialog extends BaseDialog {
                 dismiss();
                 // 回调登录失败
                 mLoginListener.onLoginFail(json);
+                // 发送失败的广播
+                sendFailBroadcast();
+
             }
         } catch (JSONException e) {
             // 对话框消失
             dismiss();
             ToastUtils.showErrorToast(HDApplication.getContext(),null,e.getMessage());
+            // 发送失败的广播
+            sendFailBroadcast();
         }
+    }
+
+
+    private void sendSuccessBroadcast() {
+        Intent intent = new Intent();
+        intent.setAction(Const.ACTION_LOGIN_STATE);
+        intent.putExtra(Const.ISLOGIN, Const.SUCCESS);
+        mContext.sendBroadcast(intent);
+
+    }
+
+    private void sendFailBroadcast() {
+        // 发送登录失败的广播
+        Intent intent = new Intent();
+        intent.setAction(Const.ACTION_LOGIN_STATE);
+        intent.putExtra(Const.ISLOGIN, Const.FAIL);
+        mContext.sendBroadcast(intent);
     }
 
     private void initViews() {

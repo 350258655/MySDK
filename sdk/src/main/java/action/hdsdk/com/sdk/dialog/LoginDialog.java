@@ -40,6 +40,7 @@ import action.hdsdk.com.sdk.listener.LoginListener;
 
 import action.hdsdk.com.sdk.utils.ToastUtils;
 import action.hdsdk.com.sdk.utils.Utils;
+import action.hdsdk.com.sdk.widget.FloatViewService;
 import action.hdsdk.com.sdk.widget.SpinnerAdapter;
 import action.hdsdk.com.sdk.widget.SpinnerView;
 
@@ -61,10 +62,11 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
     private String psw;
     private LoginListener mLoginListener;
     private List<String> datas; // 用户名列表
-    private Map<String,String> userList; // 用户名 + 密码 的列表
+    private Map<String, String> userList; // 用户名 + 密码 的列表
+    private FloatViewService mFloatViewService;
 
-    public LoginDialog(Context context,LoginListener loginListener) {
-        super(context,Const.LOGIN_DIALOG);
+    public LoginDialog(Context context, LoginListener loginListener, FloatViewService floatViewService) {
+        super(context, Const.LOGIN_DIALOG);
         // 先加载layout再调用 setContentView(view); 这样父类控制对话框的大小才会起作用
         View view = LayoutInflater.from(context).inflate(R.layout.hd_dialog_login, null);
         setContentView(view);
@@ -73,6 +75,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         mOkHttpHelper = OkHttpHelper.getInstance();
         mContext = context;
         mLoginListener = loginListener;
+        mFloatViewService = floatViewService;
 
         // 初始化View
         initViews();
@@ -128,7 +131,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
                 // 跳转到忘记密码界面，需要携带当前的账号名过去。假如不为空才传过去，因为玩家有可能是记住了以前的帐号，但是SDK是重新安装的，所以界面是不会显示以前的账号名的
                 String user = mEt_username.getText().toString().trim();
                 Intent intent = new Intent(mContext, ForgetPsdActivity.class);
-                if(user != null && !user.equals("")){
+                if (user != null && !user.equals("")) {
                     intent.putExtra(Const.CURRENT_USER, user);
                 }
                 mContext.startActivity(intent);
@@ -145,7 +148,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
     private void initDatas(Context context) {
         // 获取最新用户
         String[] user = UserList.getFirstUser(context);
-        if(user != null){
+        if (user != null) {
             Utils.log(LoginDialog.class, "最新用户是：" + user[0]);
             mEt_username.setText(user[0]);
             mEt_password.setText(user[1]);
@@ -202,6 +205,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
                 // 处理注册成功之后的事情
                 dealWithSuccess(json, Const.EVENT_LOGIN);
             }
+
             @Override
             public void onError(JSONObject json) {
                 ToastUtils.showErrorToast(mContext, json, null);
@@ -234,10 +238,6 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
     }
 
 
-
-
-
-
     /**
      * 处理回调成功后的事情
      *
@@ -250,14 +250,16 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
 
                 if (event.equals(Const.EVENT_LOGIN)) {
                     dealWithlogSuccess(json);
-                }else if(event.equals(Const.EVENT_GET_ROLE_INFO)){
+                } else if (event.equals(Const.EVENT_GET_ROLE_INFO)) {
                     dealWithgetRoleSuccess(json);
-                }else if(event.equals(Const.EVENT_REGISTER)){
+                } else if (event.equals(Const.EVENT_REGISTER)) {
                     dealWithRegisterSuccess(json);
                 }
 
             } else {
                 ToastUtils.showErrorToast(mContext, json, null);
+                mLoginListener.onLoginFail(json);
+                sendFailBroadcast();
             }
         } catch (JSONException e) {
             ToastUtils.showErrorToast(mContext, null, e.getMessage());
@@ -265,16 +267,34 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
 
     }
 
+
+    private void sendSuccessBroadcast() {
+        Intent intent = new Intent();
+        intent.setAction(Const.ACTION_LOGIN_STATE);
+        intent.putExtra(Const.ISLOGIN, Const.SUCCESS);
+        mContext.sendBroadcast(intent);
+
+    }
+
+    private void sendFailBroadcast() {
+        // 发送登录失败的广播
+        Intent intent = new Intent();
+        intent.setAction(Const.ACTION_LOGIN_STATE);
+        intent.putExtra(Const.ISLOGIN, Const.FAIL);
+        mContext.sendBroadcast(intent);
+    }
+
+
     /**
      * 注册成功后
+     *
      * @param json
      */
     private void dealWithRegisterSuccess(JSONObject json) {
         Utils.log(LoginDialog.class, "注册成功返回的信息：" + json);
         // 把用户信息存到本地中
-        UserList.addUser(new String[]{username,psw},mContext);
+        UserList.addUser(new String[]{username, psw}, mContext);
     }
-
 
 
     /**
@@ -291,7 +311,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
             mEt_password.setText(psw);
             // 明文显示密码
             mEt_password.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
-            String url = API.GAME_REGISTER+"&username="+username+"&password="+psw;
+            String url = API.GAME_REGISTER + "&username=" + username + "&password=" + psw;
             Utils.log(LoginDialog.class, "注册的url:" + url);
             mOkHttpHelper.get(url, new HttpCallback(mContext, "注册中") {
                 @Override
@@ -327,8 +347,11 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         // 回调给CP
         mLoginListener.onLoginSuccess(json);
 
-        // TODO 显示悬浮窗
+        //显示悬浮窗
+        // mFloatViewService.showFloatView();
 
+        // 发送登录成功的广播
+        sendSuccessBroadcast();
 
         // 保存数据
         // TODO 是否要绑定手机或者邮箱 !!!
@@ -336,15 +359,17 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
             JSONObject result = json.getJSONObject("result");
             // 顺便存进SP中
             HDApplication.access_token = result.getString("access_token");
-            PreferencesUtils.putString(mContext,Const.ACCESS_TOKEN,HDApplication.access_token);
+            PreferencesUtils.putString(mContext, Const.ACCESS_TOKEN, HDApplication.access_token);
 
-            if(result.getString("phone").equals("null")){
+            if (result.getString("phone").equals("null")) {
                 //Toast.makeText(mContext, "去绑定手机啦", Toast.LENGTH_SHORT).show();
-                BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext,mEt_username.getText().toString());
+                BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext, mEt_username.getText().toString());
                 bindMobileTipDialog.show();
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
+
+
 }

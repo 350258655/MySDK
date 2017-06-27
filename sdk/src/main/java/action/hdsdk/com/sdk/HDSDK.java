@@ -1,7 +1,13 @@
 package action.hdsdk.com.sdk;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -19,6 +25,7 @@ import action.hdsdk.com.sdk.listener.InitListener;
 import action.hdsdk.com.sdk.listener.LoginListener;
 import action.hdsdk.com.sdk.listener.PayListener;
 import action.hdsdk.com.sdk.utils.ToastUtils;
+import action.hdsdk.com.sdk.widget.FloatViewService;
 
 /**
  * Created by xk on 2017/6/19.
@@ -27,8 +34,11 @@ public class HDSDK {
 
     static OkHttpHelper mOkHttpHelper = OkHttpHelper.getInstance(); // 网络工具类
 
+    private static FloatViewService mFloatViewService;
+    private static IsLoginReceiver mIsLoginReceiver;
+
     private static boolean sInitSuccess = false; // 初始化是否成功
-    // private static boolean sLoginSuccess = false; // 登录是否成功
+    private static boolean sLoginSuccess = false; // 登录是否成功
 
     private HDSDK() {
 
@@ -36,9 +46,17 @@ public class HDSDK {
 
     public static void initialize(final Activity activity, final InitListener initListener) {
 
+
         // 显示 splash
         SplashDialog splashDialog = new SplashDialog(activity);
         splashDialog.show();
+
+        // 绑定服务
+        activity.bindService(new Intent(activity, FloatViewService.class), mConnection, Context.BIND_AUTO_CREATE);
+
+        // 注册广播接收者
+        mIsLoginReceiver = new IsLoginReceiver();
+        activity.registerReceiver(mIsLoginReceiver, new IntentFilter(Const.ACTION_LOGIN_STATE));
 
         // 请求初始化接口
         mOkHttpHelper.get(API.GAME_SETTING, new HttpCallback(activity, Const.INIT_MSG) {
@@ -77,12 +95,12 @@ public class HDSDK {
             accessToekn = PreferencesUtils.getString(activity, Const.ACCESS_TOKEN, "");
             if (accessToekn == null || accessToekn.equals("")) {
                 // 显示登录对话框
-                LoginDialog loginDialog = new LoginDialog(activity, loginListener);
+                LoginDialog loginDialog = new LoginDialog(activity, loginListener, mFloatViewService);
                 loginDialog.show();
             } else {
                 // 显示自动登录对话框
                 //ToastUtils.showErrorToast(HDApplication.getContext(),null,"显示自动登录对话框");
-                AutoLoginDialog autoLoginDialog = new AutoLoginDialog(activity, accessToekn, loginListener);
+                AutoLoginDialog autoLoginDialog = new AutoLoginDialog(activity, accessToekn, loginListener, mFloatViewService);
                 autoLoginDialog.show();
             }
         }
@@ -101,21 +119,40 @@ public class HDSDK {
      * @param activity
      * @param payListener
      */
-    public static void doPay(Activity activity, PayListener payListener,String productName,double amount,String notifyUrl,String exOrderNum,String roleId,String serverId,String exInfo,String productInfo) {
+    public static void doPay(Activity activity, PayListener payListener, String productName, double amount, String notifyUrl, String exOrderNum, String roleId, String serverId, String exInfo, String productInfo) {
 
         // 假如还没初始化则不允许支付
-        if (!sInitSuccess) {
+        if (!sLoginSuccess) {
             ToastUtils.showErrorToast(activity, null, Const.ERROR_TIP_PAY);
             return;
         }
 
 
-        OrderDialog orderDialog = new OrderDialog(activity,payListener,productName,amount,notifyUrl,exOrderNum,roleId,serverId,exInfo,productInfo);
+        OrderDialog orderDialog = new OrderDialog(activity, payListener, productName, amount, notifyUrl, exOrderNum, roleId, serverId, exInfo, productInfo);
         orderDialog.show();
 
 //        Intent intent = new Intent(activity,OrderActivity.class);
 //        activity.startActivity(intent);
 
+    }
+
+    public static void onResume(Activity activity) {
+        if (sLoginSuccess) {
+            mFloatViewService.showFloatView();
+        }
+    }
+
+    public static void onPause(Activity activity) {
+        if (sLoginSuccess) {
+            mFloatViewService.hideFloatView();
+        }
+    }
+
+    public static void onDestroy(Activity activity) {
+        // 注销广播接收者
+        activity.unregisterReceiver(mIsLoginReceiver);
+        // 销毁悬浮窗
+        mFloatViewService.destroyFloatView();
     }
 
 
@@ -146,6 +183,36 @@ public class HDSDK {
             initListener.onInitFail(json);
             // 显示初始化错误的吐司
             ToastUtils.showErrorToast(activity, json, null);
+        }
+    }
+
+
+    private static ServiceConnection mConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            mFloatViewService = ((FloatViewService.FloatViewServiceBinder) service).getService();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mFloatViewService = null;
+        }
+    };
+
+
+    private static class IsLoginReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            if (intent.getStringExtra(Const.ISLOGIN).equals(Const.SUCCESS)) {
+                sLoginSuccess = true;
+                mFloatViewService.showFloatView();
+            } else if (intent.getStringExtra(Const.ISLOGIN).equals(Const.FAIL)) {
+                sLoginSuccess = false;
+                mFloatViewService.hideFloatView();
+            }
+
         }
     }
 

@@ -96,4 +96,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Utils.log(MainActivity.class,"支付失败："+json);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        HDSDK.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        HDSDK.onPause(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        HDSDK.onDestroy(this);
+    }
 }

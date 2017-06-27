@@ -11,7 +11,7 @@ public class Const {
 
 
     public static final String ERROR_TIP_LOGIN = "初始化失败，无法登录 !";
-    public static final String ERROR_TIP_PAY = "初始化失败，无法支付 !";
+    public static final String ERROR_TIP_PAY = "用户还没登录，无法支付 !";
 
 
     public static final String EVENT_LOGIN = "login";
@@ -71,6 +71,11 @@ public class Const {
     public static final String FAIL = "fail";
     public static final String ACTION_PAY = "action_pay";
 
+
+    // 是否是登录状态
+    public static final String ACTION_LOGIN_STATE = "login_state";
+    public static final String ISLOGIN = "islogin";
+    public static final String ISNOTLOGIN = "isnotlogin";
 
 
     /**
