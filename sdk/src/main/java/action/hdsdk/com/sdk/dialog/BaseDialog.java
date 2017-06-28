@@ -139,7 +139,7 @@ public class BaseDialog extends Dialog {
     /**
      * 关闭对话框，并且解除广播接收者
      */
-    private void closdDialog() {
+    public void closdDialog() {
         if (isShowing()) {
             dismiss();
             mContext.unregisterReceiver(mHomeKeyEventReceiver);

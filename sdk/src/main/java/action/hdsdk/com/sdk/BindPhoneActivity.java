@@ -109,6 +109,7 @@ public class BindPhoneActivity extends BaseActivity {
                 // 跳转到校验验证码的界面
                 Intent intent = new Intent(BindPhoneActivity.this,CheckVeryCodeActivity.class);
                 intent.putExtra(Const.PHONE,mEt_phone.getText().toString().trim());
+                intent.putExtra(Const.CURRENT_USER,mCurrentUser);
                 startActivity(intent);
 
                 // 把当前的Activity添加到集合中

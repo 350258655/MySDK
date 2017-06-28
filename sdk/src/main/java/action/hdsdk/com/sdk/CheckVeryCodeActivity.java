@@ -12,6 +12,7 @@ import android.widget.EditText;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import action.hdsdk.com.sdk.db.BindPhoneUser;
 import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
@@ -27,6 +28,7 @@ public class CheckVeryCodeActivity extends BaseActivity {
     private CountDownTime mDownTime;
     private String phone; // 手机号码
     private OkHttpHelper mOkHttpHelper;
+    private String mCurrentUser;
 
 
     @Override
@@ -56,6 +58,7 @@ public class CheckVeryCodeActivity extends BaseActivity {
         // 获取手机号码
         Intent intent = getIntent();
         phone = intent.getStringExtra(Const.PHONE);
+        mCurrentUser = intent.getStringExtra(Const.CURRENT_USER);
 
         // 初始化网络工具
         mOkHttpHelper = OkHttpHelper.getInstance();
@@ -204,7 +207,8 @@ public class CheckVeryCodeActivity extends BaseActivity {
     private void dealWithBindSuccess(JSONObject json) {
 
         ToastUtils.showErrorToast(HDApplication.getContext(), null, "绑定手机成功！");
-
+        // 添加到集合中
+        BindPhoneUser.addBindUser(mCurrentUser, phone);
         // 关闭当前Activity，和绑定手机界面的那个Activity
         finish();
         HDApplication.getInstance().finishActivity();

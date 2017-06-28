@@ -15,6 +15,7 @@ import java.util.Map;
 import action.hdsdk.com.sdk.db.BindPhoneUser;
 import action.hdsdk.com.sdk.db.PreferencesUtils;
 import action.hdsdk.com.sdk.db.UserList;
+import action.hdsdk.com.sdk.dialog.ExitDialog;
 import action.hdsdk.com.sdk.utils.ToastUtils;
 
 public class UserCenterActivity extends BaseActivity implements View.OnClickListener {
@@ -25,6 +26,7 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
     private TextView mTvCSCenter;
     private TextView mTvUserBind;
     private Button mBtn_logout;
+    private ExitDialog mExitDialog;
 
 
     @Override
@@ -58,25 +60,39 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onClick(View view) {
 
-                new AlertDialog.Builder(UserCenterActivity.this).setTitle("确认切换帐号吗？")
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                // 切换帐号
-                                logout();
-
-                            }
-                        })
-                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-
-                            }
-                        }).show();
-
+                // 显示切换帐号对话框
+                showLogoutDialog();
 
             }
         });
+    }
+
+
+    /**
+     * 显示切换帐号对话框
+     */
+    private void showLogoutDialog() {
+
+        mExitDialog = new ExitDialog.Builder(UserCenterActivity.this)
+                .setTitle(Const.LOGOUT_DIALOG_TITLE)
+                .setContent(Const.LOGOUT_DIALOG_MESSAGE)
+                .setPositiveButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        logout();
+                        mExitDialog.dismiss();
+                    }
+                })
+                .setNegativeButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mExitDialog.dismiss();
+                    }
+                })
+                .build();
+        // 显示对话框
+        mExitDialog.show();
+
     }
 
 
@@ -93,6 +109,8 @@ public class UserCenterActivity extends BaseActivity implements View.OnClickList
         intent.setAction(Const.ACTION_LOGOUT);
         sendBroadcast(intent);
 
+        // 退出本Activity
+        finish();
     }
 
 

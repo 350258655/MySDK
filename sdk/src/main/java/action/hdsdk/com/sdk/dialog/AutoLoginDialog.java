@@ -51,7 +51,7 @@ public class AutoLoginDialog extends BaseDialog {
             }
             try {
                 // 此对话框消失
-                dismiss();
+               closdDialog();
 
                 // 回调登录成功
                 String jsonString = msg.getData().getString(Const.AUTO_LOGIN_CALLBACK);
@@ -69,6 +69,7 @@ public class AutoLoginDialog extends BaseDialog {
                     BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext, userName);
                     bindMobileTipDialog.show();
                 }else {
+                    Utils.log(AutoLoginDialog.class,"出现的错误："+userName+",phone: "+phone);
                     BindPhoneUser.addBindUser(userName, phone);
                 }
 

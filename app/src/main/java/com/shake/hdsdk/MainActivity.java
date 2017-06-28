@@ -8,8 +8,10 @@ import android.widget.Button;
 
 import org.json.JSONObject;
 
+import action.hdsdk.com.sdk.Const;
 import action.hdsdk.com.sdk.HDSDK;
 import action.hdsdk.com.sdk.UserCenterActivity;
+import action.hdsdk.com.sdk.listener.ExitListener;
 import action.hdsdk.com.sdk.listener.InitListener;
 import action.hdsdk.com.sdk.listener.LoginListener;
 import action.hdsdk.com.sdk.listener.LogoutListener;
@@ -22,7 +24,7 @@ import action.hdsdk.com.sdk.utils.Utils;
  *  2、像有些图片什么的，是放在高像素级别的目录，还是低像素的目录。这是屏幕适配的问题。因为对话框的大小，去到不同的手机，就显示不一样了
  *      觉得应该是在那种 value中设置那种dimen吧。这个等基本功能开发完成之后，再来研究总结
  *  3、进度对话框的问题。ProgressDialogUtils
- *  4、自动登录会出问题，怀疑原因是S不能写死
+ *
  */
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -43,8 +45,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         // 设置注销事件
         HDSDK.setLogoutListener(new LogoutListener() {
             @Override
-            public void onLogout() {
-                Utils.log(MainActivity.class,"用户注销");
+            public void onLogout(String msg) {
+                if(msg.equals(Const.LOGOUT_SUCCESS)){
+                    Utils.log(MainActivity.class,"用户注销");
+                }
             }
         });
     }
@@ -62,7 +66,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 HDSDK.doPay(this,new CpOrderListener(),"测试",0.01,"http://callback","外部订单","角色ID","区服ID","扩展信息","产品描述");
                 break;
             case R.id.btn_exit:
-                startActivity(new Intent(MainActivity.this, UserCenterActivity.class));
+               // startActivity(new Intent(MainActivity.this, UserCenterActivity.class));
+                HDSDK.doExit(this,new CpExitListener());
                 break;
 
         }
@@ -106,6 +111,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         @Override
         public void onPayFail(JSONObject json) {
             Utils.log(MainActivity.class,"支付失败："+json);
+        }
+    }
+
+
+    private class CpExitListener implements ExitListener{
+
+        @Override
+        public void onExitSuccess(String msg) {
+            if(msg.equals(Const.EXIT_SUCCESS)){
+                Utils.log(MainActivity.class,"退出成功！");
+            }
+        }
+
+        @Override
+        public void onExitCancle(String msg) {
+            if(msg.equals(Const.EXIT_CANCLE)){
+                Utils.log(MainActivity.class,"取消退出");
+            }
+
         }
     }
 

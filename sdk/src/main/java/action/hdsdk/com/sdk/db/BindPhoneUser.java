@@ -1,5 +1,7 @@
 package action.hdsdk.com.sdk.db;
 
+import android.annotation.TargetApi;
+
 import com.google.gson.Gson;
 
 import java.util.HashMap;
@@ -22,7 +24,14 @@ public class BindPhoneUser {
     public static void addBindUser(String userName,String phone) {
 
         Map<String, String> userList = getAllBindUser();
-        userList.put(userName,phone);
+
+        // 判断假如存在的话，就先添加，否则添加
+        if(userList.containsKey(userName)){
+            userList.remove(userName);
+            userList.put(userName,phone);
+        }else {
+            userList.put(userName,phone);
+        }
 
         // 转换成字符串之后，存在sp中
         String userListMsg = userList.toString();
@@ -43,6 +52,7 @@ public class BindPhoneUser {
         if (msg == null) {
             return map;
         }
+
 
         if (mGson == null) {
             mGson = new Gson();

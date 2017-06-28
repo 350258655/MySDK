@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.os.IBinder;
+import android.view.View;
 import android.widget.Toast;
 
 import org.json.JSONException;
@@ -15,12 +16,14 @@ import org.json.JSONObject;
 
 import action.hdsdk.com.sdk.db.PreferencesUtils;
 import action.hdsdk.com.sdk.dialog.AutoLoginDialog;
+import action.hdsdk.com.sdk.dialog.ExitDialog;
 import action.hdsdk.com.sdk.dialog.LoginDialog;
 import action.hdsdk.com.sdk.dialog.OrderDialog;
 import action.hdsdk.com.sdk.dialog.SplashDialog;
 import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.HttpCallback;
 import action.hdsdk.com.sdk.http.OkHttpHelper;
+import action.hdsdk.com.sdk.listener.ExitListener;
 import action.hdsdk.com.sdk.listener.InitListener;
 import action.hdsdk.com.sdk.listener.LoginListener;
 import action.hdsdk.com.sdk.listener.LogoutListener;
@@ -38,11 +41,12 @@ public class HDSDK {
     private static FloatViewService mFloatViewService;
     private static IsLoginReceiver mIsLoginReceiver;
     private static LogoutReceiver sLogoutReceiver;
+    private static LogoutListener sLogoutListener;
 
     private static boolean sInitSuccess = false; // 初始化是否成功
     private static boolean sLoginSuccess = false; // 登录是否成功
-    private static boolean sIsLogout = false;
 
+    private static ExitDialog sExitDialog; // 退出对话框
     private HDSDK() {
 
     }
@@ -60,8 +64,10 @@ public class HDSDK {
         // 注册广播接收者检测是否登录
         mIsLoginReceiver = new IsLoginReceiver();
         activity.registerReceiver(mIsLoginReceiver, new IntentFilter(Const.ACTION_LOGIN_STATE));
+
         // 注册广播接收者检测是否注销
-        activity.registerReceiver(sLogoutReceiver,new IntentFilter(Const.ACTION_LOGOUT));
+        sLogoutReceiver = new LogoutReceiver();
+        activity.registerReceiver(sLogoutReceiver, new IntentFilter(Const.ACTION_LOGOUT));
         // 请求初始化接口
         mOkHttpHelper.get(API.GAME_SETTING, new HttpCallback(activity, Const.INIT_MSG) {
             @Override
@@ -91,6 +97,12 @@ public class HDSDK {
             ToastUtils.showErrorToast(activity, null, Const.ERROR_TIP_LOGIN);
             return;
         }
+
+        if (sLoginSuccess) {
+            ToastUtils.showErrorToast(activity, null, Const.ERROR_HAS_LOGIN);
+            return;
+        }
+
 
         // 判断是自动登录还是普通登录
         String accessToekn = HDApplication.access_token;
@@ -141,10 +153,41 @@ public class HDSDK {
     }
 
 
-    public static void setLogoutListener(LogoutListener listener){
-        if(sIsLogout){
-            listener.onLogout();
-        }
+
+    public static void doExit(Activity activity, final ExitListener listener){
+        sExitDialog = new ExitDialog.Builder(activity)
+                .setTitle(Const.EXIT_DIALOG_TITLE)
+                .setContent(Const.EXIT_DIALOG_MESSAGE)
+                .setPositiveButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onExitSuccess(Const.EXIT_SUCCESS);
+                        sExitDialog.dismiss();
+                    }
+                })
+                .setNegativeButton(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        listener.onExitCancle(Const.EXIT_CANCLE);
+                        sExitDialog.dismiss();
+                    }
+                })
+                .build();
+
+        // 显示对话框
+        sExitDialog.show();
+
+    }
+
+
+
+    /**
+     * 设置切换帐号的监听器
+     *
+     * @param listener
+     */
+    public static void setLogoutListener(LogoutListener listener) {
+        sLogoutListener = listener;
     }
 
     public static void onResume(Activity activity) {
@@ -162,6 +205,7 @@ public class HDSDK {
     public static void onDestroy(Activity activity) {
         // 注销广播接收者
         activity.unregisterReceiver(mIsLoginReceiver);
+        activity.unregisterReceiver(sLogoutReceiver);
         // 销毁悬浮窗
         mFloatViewService.destroyFloatView();
     }
@@ -230,7 +274,11 @@ public class HDSDK {
     private static class LogoutReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-                sIsLogout = true;
+            if (sLogoutListener != null) {
+                sLogoutListener.onLogout(Const.LOGOUT_SUCCESS);
+                // 改变登录状态
+                sLoginSuccess = false;
+            }
         }
     }
 

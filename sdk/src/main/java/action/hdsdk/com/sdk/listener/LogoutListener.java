@@ -8,6 +8,6 @@ public interface LogoutListener {
     /**
      * 注销用户的接口
      */
-    public void onLogout();
+    public void onLogout(String msg);
 
 }

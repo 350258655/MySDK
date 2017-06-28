@@ -59,7 +59,6 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
     private TextView mTv_forgetPwd;
     private OkHttpHelper mOkHttpHelper;
     private Context mContext;
-    private String username;
     private String psw;
     private LoginListener mLoginListener;
     private List<String> datas; // 用户名列表
@@ -294,7 +293,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
     private void dealWithRegisterSuccess(JSONObject json) {
         Utils.log(LoginDialog.class, "注册成功返回的信息：" + json);
         // 把用户信息存到本地中
-        UserList.addUser(new String[]{username, psw}, mContext);
+        UserList.addUser(new String[]{mEt_username.getText().toString().trim(), psw}, mContext);
     }
 
 
@@ -305,7 +304,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
      */
     private void dealWithgetRoleSuccess(JSONObject json) {
         try {
-            username = json.getJSONObject("result").getString("username");
+            String username = json.getJSONObject("result").getString("username");
             psw = json.getJSONObject("result").getString("password");
             // 先设置到界面上，防止加载网络的速度太慢，导致无法较快显示到用户眼前
             mEt_username.setText(username);
@@ -344,7 +343,7 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         // 把用户信息存到本地中。因为注册和登录的，不一定是同一个玩家
         UserList.addUser(new String[]{mEt_username.getText().toString(), mEt_password.getText().toString()}, mContext);
         // 登录框消失
-        dismiss();
+        closdDialog();
         // 回调给CP
         mLoginListener.onLoginSuccess(json);
 
@@ -366,10 +365,10 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
             String phone = result.getString("phone");
             if (phone.equals("null")) {
                 //Toast.makeText(mContext, "去绑定手机啦", Toast.LENGTH_SHORT).show();
-                BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext, username);
+                BindMobileTipDialog bindMobileTipDialog = new BindMobileTipDialog(mContext, mEt_username.getText().toString().trim());
                 bindMobileTipDialog.show();
             }else {
-                BindPhoneUser.addBindUser(username,phone);
+                BindPhoneUser.addBindUser(mEt_username.getText().toString().trim(),phone);
             }
         } catch (JSONException e) {
             e.printStackTrace();

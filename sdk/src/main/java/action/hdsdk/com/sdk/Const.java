@@ -12,6 +12,7 @@ public class Const {
 
     public static final String ERROR_TIP_LOGIN = "初始化失败，无法登录 !";
     public static final String ERROR_TIP_PAY = "用户还没登录，无法支付 !";
+    public static final String ERROR_HAS_LOGIN = "用户已经处于登录状态 !";
 
 
     public static final String EVENT_LOGIN = "login";
@@ -95,7 +96,33 @@ public class Const {
      */
     public static final String CHANNEL_ALIPAY = "alipay";
 
+    /**
+     * 退出对话框
+     */
+    public static final String EXIT_DIALOG_TITLE = "退出";
+    public static final String EXIT_DIALOG_MESSAGE = "您确定要退出吗？";
 
+
+    /**
+     * 切换帐号对话框
+     */
+    public static final String LOGOUT_DIALOG_TITLE = "切换帐号";
+    public static final String LOGOUT_DIALOG_MESSAGE = "您确定要切换帐号吗？";
+
+
+    /**
+     * 取消订单对话框
+     */
+    public static final String CANCLE_ORDER_DIALOG_TITLE = "取消订单";
+    public static final String CANCLE_ORDER_DIALOG_MESSAGE = "您确定要取消订单？";
+
+
+    // 退出成功回调的内容
+    public static final String EXIT_SUCCESS = "exit";
+    // 取消退出回调的内容
+    public static final String EXIT_CANCLE = "cancle";
+    // 注销账户回调的内容
+    public static final String LOGOUT_SUCCESS = "logout";
 
     // 加密串
     public static final String s = "VXS%2FAMTCla40exDJfQNAwsz%2Fyj0b7Kt3oA1vbthQ6f7UsQpC6ojQEkfQJQDV+Z5I5x%2FBFUN34xhuDnTmWJSXvzAiStzXMgXjrf1%2BzHjUhwBnPUOTxtuTl1y4G+LMtrAUpLeVd4qG7E42nJdEJEB2bqes3kaNVw%2Fp%2FqAapsa9t0oytFYHRFbd0y+UurWrR1Ky1A6QSid2oyn%2BPQ%2FD9MS2LW7PNU6opLz96PKKjkP0LK9bgyZ%2B7qq+ZESTlyYdehfEED6L83b3Gb%2B%2BIVUo%2B%2Bo2AFHeyLxi0O98VmPYOQbCiSj12%2B54+7osRvdY670k6je4dfHmiAt2nPp%2FvV3nUCRiWN6j6Xfe%2FgyF77rAc3vcK68Ed+v7TCz5GIXp03ZG%2BR%2BPAGWI84ehHzHmuJwPCxFSW7eoZ3SEhoPhIEWnyNx0Jr+ZkLCcxy3CAIYOnKzMuFODDf3%2Bh4848ftuS%2F39N%2Fe%2BYmtmaCZ4pO23qP7r8%2B8+z5Ta8wM%2B9zUkU7%2Fd7PDn8DVokPVZKO5fCK6f9w1OKzvSLuiBghBSUHon9d0L+L0fDOHO1xmzkkE52JWHEyyd8cuT9EM5IeEvV7qjslTzJdlcsWZiaSDa6X3Vz+UKznHQXqoGR0ec2TReBc9PkChYVc%2B0wDN4evEwzpiJthyCf0r7gxeH4ed1zf+M0vhscvGKCl4";
