@@ -104,13 +104,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private class CpOrderListener implements PayListener{
 
         @Override
-        public void onPaySuccess(JSONObject json) {
-            Utils.log(MainActivity.class,"支付成功："+json);
+        public void onPaySuccess(String msg) {
+            if(msg.equals(Const.SUCCESS)){
+                Utils.log(MainActivity.class,"支付成功！");
+            }
         }
 
         @Override
-        public void onPayFail(JSONObject json) {
-            Utils.log(MainActivity.class,"支付失败："+json);
+        public void onPayCancle(String msg) {
+            if(msg.equals(Const.CANCLE)){
+                Utils.log(MainActivity.class,"取消支付");
+            }
+        }
+
+        @Override
+        public void onPayFail(String msg) {
+
+            Utils.log(MainActivity.class,"支付失败："+msg);
         }
     }
 

@@ -68,12 +68,16 @@ public class Const {
     // 获取微信支付的参数
     public static final String GET_WX_PARAMS = "get_wx_params";
 
-    // 微信支付回调
+    // 支付回调
+    public static final String PAY_RESULT= "pay_result";
     public static final String PAY_SUCCESS = "pay_success";
     public static final String PAY_FAIL = "pay_fail";
+    public static final String PAY_CANCLE = "pay_fail";
     public static final String SUCCESS  = "success";
     public static final String FAIL = "fail";
+    public static final String CANCLE = "cancle";
     public static final String ACTION_PAY = "action_pay";
+    public static final String PAY_FAIL_INFO = "pay_fail_info";
 
 
     // 是否是登录状态
@@ -85,6 +89,13 @@ public class Const {
     // 是否是注销
     public static final String ACTION_LOGOUT = "action_logout";
 
+
+    // 微信支付Activiy的回调
+    public static final int WX_CALLBACK = 5;
+    // 微信支付成功
+    public static final int WX_PAY_SUCCESS = 100;
+    // 微信支付失败
+    public static final int WX_PAY_FAIL = 99;
 
 
     /**
@@ -115,6 +126,20 @@ public class Const {
      */
     public static final String CANCLE_ORDER_DIALOG_TITLE = "取消订单";
     public static final String CANCLE_ORDER_DIALOG_MESSAGE = "您确定要取消订单？";
+
+
+    /**
+     * 下单相关信息
+     */
+    public static final String ORDER_INFO = "order_info";
+    public static final String ORDER_PRODUCT_NAME = "productName";
+    public static final String ORDER_AMOUNT = "amount";
+    public static final String ORDER_NOTIFYURL = "notifyUrl";
+    public static final String ORDER_EX_ORDERNUM = "exOrderNum";
+    public static final String ORDER_ROLEID = "roleId";
+    public static final String ORDER_SERVERID = "serverId";
+    public static final String ORDER_EX_INFO = "exinfo";
+    public static final String ORDER_PROCUCT_INFO = "productInfo";
 
 
     // 退出成功回调的内容

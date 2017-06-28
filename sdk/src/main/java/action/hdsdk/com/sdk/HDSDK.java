@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.view.View;
 import android.widget.Toast;
@@ -18,7 +19,6 @@ import action.hdsdk.com.sdk.db.PreferencesUtils;
 import action.hdsdk.com.sdk.dialog.AutoLoginDialog;
 import action.hdsdk.com.sdk.dialog.ExitDialog;
 import action.hdsdk.com.sdk.dialog.LoginDialog;
-import action.hdsdk.com.sdk.dialog.OrderDialog;
 import action.hdsdk.com.sdk.dialog.SplashDialog;
 import action.hdsdk.com.sdk.http.API;
 import action.hdsdk.com.sdk.http.HttpCallback;
@@ -39,9 +39,11 @@ public class HDSDK {
     static OkHttpHelper mOkHttpHelper = OkHttpHelper.getInstance(); // 网络工具类
 
     private static FloatViewService mFloatViewService;
-    private static IsLoginReceiver mIsLoginReceiver;
-    private static LogoutReceiver sLogoutReceiver;
-    private static LogoutListener sLogoutListener;
+    private static IsLoginReceiver mIsLoginReceiver; // 登录是否成功的广播接收者
+    private static LogoutReceiver sLogoutReceiver;  // 注销是否成功的广播接收者
+    private static PayResultReceiver sPayResultReceiver; // 支付是否成功的广播接收者
+    private static LogoutListener sLogoutListener; // 注销的监听器
+    private static PayListener sPayListener; // 支付结果的监听器
 
     private static boolean sInitSuccess = false; // 初始化是否成功
     private static boolean sLoginSuccess = false; // 登录是否成功
@@ -68,6 +70,12 @@ public class HDSDK {
         // 注册广播接收者检测是否注销
         sLogoutReceiver = new LogoutReceiver();
         activity.registerReceiver(sLogoutReceiver, new IntentFilter(Const.ACTION_LOGOUT));
+
+        // 注册广播接收者检查支付是否成功
+        sPayResultReceiver = new PayResultReceiver();
+        activity.registerReceiver(sPayResultReceiver,new IntentFilter(Const.ACTION_PAY));
+
+
         // 请求初始化接口
         mOkHttpHelper.get(API.GAME_SETTING, new HttpCallback(activity, Const.INIT_MSG) {
             @Override
@@ -143,12 +151,25 @@ public class HDSDK {
             return;
         }
 
+        // 下单的监听器
+        sPayListener = payListener;
 
-        OrderDialog orderDialog = new OrderDialog(activity, payListener, productName, amount, notifyUrl, exOrderNum, roleId, serverId, exInfo, productInfo);
-        orderDialog.show();
+//        OrderDialog orderDialog = new OrderDialog(activity, payListener, productName, amount, notifyUrl, exOrderNum, roleId, serverId, exInfo, productInfo);
+//        orderDialog.show();
 
-//        Intent intent = new Intent(activity,OrderActivity.class);
-//        activity.startActivity(intent);
+        // 跳转到下单的Activity
+        Intent intent = new Intent(activity,OrderActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString(Const.ORDER_PRODUCT_NAME,productName);
+        bundle.putDouble(Const.ORDER_AMOUNT, amount);
+        bundle.putString(Const.ORDER_NOTIFYURL, notifyUrl);
+        bundle.putString(Const.ORDER_EX_ORDERNUM, exOrderNum);
+        bundle.putString(Const.ORDER_ROLEID, roleId);
+        bundle.putString(Const.ORDER_SERVERID, serverId);
+        bundle.putString(Const.ORDER_EX_INFO, exInfo);
+        bundle.putString(Const.ORDER_PROCUCT_INFO,productInfo);
+        intent.putExtra(Const.ORDER_INFO,bundle);
+        activity.startActivity(intent);
 
     }
 
@@ -255,6 +276,9 @@ public class HDSDK {
     };
 
 
+    /**
+     * 检测登录是否成功的广播接收者
+     */
     private static class IsLoginReceiver extends BroadcastReceiver {
 
         @Override
@@ -271,6 +295,10 @@ public class HDSDK {
         }
     }
 
+
+    /**
+     * 检查注销是否成功的广播接收者
+     */
     private static class LogoutReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -281,6 +309,37 @@ public class HDSDK {
             }
         }
     }
+
+
+    /**
+     * 检查支付是否成功的广播接收者
+     */
+    private static class PayResultReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+            // 获取支付结果
+            String result = intent.getStringExtra(Const.PAY_RESULT);
+
+            if(result.equals(Const.PAY_SUCCESS)){
+                // 回调支付成功
+                sPayListener.onPaySuccess(Const.SUCCESS);
+
+            }else if(result.equals(Const.PAY_CANCLE)){
+                // 回调取消订单
+                sPayListener.onPayCancle(Const.CANCLE);
+
+            }else if(result.equals(Const.PAY_FAIL)){
+                // 回调支付失败
+                sPayListener.onPayFail(Const.FAIL);
+            }
+
+
+        }
+    }
+
+
 
 
 }

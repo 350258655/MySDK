@@ -41,8 +41,9 @@ public class WftWXPayActivity extends Activity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        Intent intent = new Intent();
-        intent.setAction(Const.ACTION_PAY);
+        // 发送广播是针对dialog的做法
+        //Intent intent = new Intent();
+        //intent.setAction(Const.ACTION_PAY);
         if (data == null)
         {
             return;
@@ -52,17 +53,19 @@ public class WftWXPayActivity extends Activity {
         if (!TextUtils.isEmpty(respCode) && respCode.equalsIgnoreCase("success"))
         {
             //标示支付成功
-            intent.putExtra(Const.PAY_SUCCESS,Const.SUCCESS);
+            //intent.putExtra(Const.PAY_SUCCESS,Const.SUCCESS);
+            setResult(Const.WX_PAY_SUCCESS);
             finish();
         }
         else
         { //其他状态NOPAY状态：取消支付，未支付等状态
-            intent.putExtra(Const.PAY_FAIL, Const.FAIL);
+            //intent.putExtra(Const.PAY_FAIL, Const.FAIL);
+            setResult(Const.WX_PAY_FAIL);
             finish();
         }
 
         // 发送广播
-        sendBroadcast(intent);
+        //sendBroadcast(intent);
         super.onActivityResult(requestCode, resultCode, data);
     }
 

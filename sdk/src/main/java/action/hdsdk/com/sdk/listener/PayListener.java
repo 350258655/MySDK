@@ -11,16 +11,24 @@ public interface PayListener {
     /**
      * 支付成功
      *
-     * @param json
+     * @param msg
      */
-    public void onPaySuccess(JSONObject json);
+    public void onPaySuccess(String msg);
+
+
+    /**
+     * 取消支付
+     *
+     * @param msg
+     */
+    public void onPayCancle(String msg);
 
 
     /**
      * 支付失败
      *
-     * @param json
+     * @param msg
      */
-    public void onPayFail(JSONObject json);
+    public void onPayFail(String msg);
 
 }

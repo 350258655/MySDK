@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import action.hdsdk.com.sdk.utils.Utils;
+
 /**
  * Created by shake on 2017/6/20.
  * 网络工具类
@@ -111,6 +113,7 @@ public class OkHttpHelper {
                 callbackResponse(callback, response);
                 // 获取请求结果
                 String resultStr = response.body().string();
+                Utils.log(OkHttpHelper.class,"请求到的数据:"+resultStr);
                 try {
                     JSONObject jsonResult = new JSONObject(resultStr);
                     if (response.isSuccessful()) {
@@ -122,6 +125,8 @@ public class OkHttpHelper {
                     }
 
                 } catch (JSONException e) {
+
+
                     // 发生json异常
                     callbackError(callback, null);
                 }
