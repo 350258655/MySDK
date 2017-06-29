@@ -11,16 +11,16 @@ public interface InitListener {
     /**
      * 初始化成功的回调接口
      *
-     * @param json
+     * @param msg
      */
-    public void onInitSuccess(JSONObject json);
+    public void onInitSuccess(String msg);
 
 
     /**
      * 初始化失败
      *
-     * @param json
+     * @param msg
      */
-    public void onInitFail(JSONObject json);
+    public void onInitFail(String msg);
 
 }

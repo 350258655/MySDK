@@ -26,12 +26,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <!-- 0表示竖屏，1表示横屏-->
-        <meta-data
-            android:name="hdorientation"
-            android:value="0"/>
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -45,6 +42,37 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
         <service android:name="action.hdsdk.com.sdk.widget.FloatViewService"/>
+
+        <activity android:name="action.hdsdk.com.sdk.BindPhoneActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.CheckVeryCodeActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.ForgetPsdActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.BaseActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.ResetPasswordActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.WftWXPayActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.OrderActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.UserCenterActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.ChangePsdActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
+        <activity android:name="action.hdsdk.com.sdk.CSCenterActivity"
+                  android:configChanges="orientation|keyboardHidden|navigation|screenSize">
+        </activity>
     </application>
 
 </manifest>

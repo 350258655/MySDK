@@ -606,7 +606,7 @@ public class OrderActivity extends BaseActivity implements View.OnClickListener 
         }
         sendBroadcast(intent);
 
-        ToastUtils.showErrorToast(getApplicationContext(), json, null);
+        ToastUtils.showErrorToast(getApplicationContext(), null, msg);
     }
 
     /**

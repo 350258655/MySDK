@@ -77,13 +77,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private class CpInitListener implements InitListener{
 
         @Override
-        public void onInitSuccess(JSONObject json) {
-            Utils.log(MainActivity.class,"初始化成功："+json);
+        public void onInitSuccess(String msg) {
+            Utils.log(MainActivity.class,"初始化成功："+msg);
         }
 
         @Override
-        public void onInitFail(JSONObject json) {
-            Utils.log(MainActivity.class,"初始化失败："+json);
+        public void onInitFail(String msg) {
+            Utils.log(MainActivity.class,"初始化失败："+msg);
         }
     }
 

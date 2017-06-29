@@ -6,8 +6,10 @@ package action.hdsdk.com.sdk;
  */
 public class Const {
 
-    public static final String INIT_MSG = "初始化中";
-    public static final String INIT_LOGIN = "登录中";
+    public static final String INIT_SUCCESS = "success";
+    public static final String INIT_FAIL = "fail";
+
+    public static final int ORIENTATION = 5555;
 
 
     public static final String ERROR_TIP_LOGIN = "初始化失败，无法登录 !";

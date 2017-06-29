@@ -18,8 +18,10 @@ public class ToastUtils {
     public static void showErrorToast(Context context, JSONObject json, String customMsg) {
         try {
             if (customMsg == null || customMsg.equals("")) {
-                String msg = json.getString("message");
-                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                if(json != null){
+                    String msg = json.getString("message");
+                    Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+                }
             } else {
                 Toast.makeText(context, customMsg, Toast.LENGTH_SHORT).show();
             }

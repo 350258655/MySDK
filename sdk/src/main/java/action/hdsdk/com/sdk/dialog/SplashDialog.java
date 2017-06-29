@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
@@ -28,6 +29,7 @@ public class SplashDialog extends Dialog {
     private Context mContext;
     private ImageView image_splash;
     private Handler mHandler;
+    private int hdorientation = 0;
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -56,17 +58,19 @@ public class SplashDialog extends Dialog {
         setContentView(R.layout.hd_splash);
         image_splash = findViewById(R.id.image_splash);
 
-
-        // 获取当前屏幕方向
-        String hdorientation = MetaDataUtils.getApplicationMetaData(context,"hdorientation");
-        Utils.log(SplashDialog.class,"SplashDialog,当前屏幕方向是："+hdorientation);
-        // 竖屏
-        if(hdorientation.equals("0")){
-            initBitmap(context,"verticalSplash.png");
-        }else {
+        // 判断横竖屏
+        DisplayMetrics dm = new DisplayMetrics();
+        getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
         // 横屏
+        if(width > height){
+            hdorientation = 1;
             initBitmap(context,"horizontalSplash.png");
+        }else {
+            initBitmap(context,"verticalSplash.png");
         }
+
 
         // 初始化Handler
         mHandler = new Handler();
@@ -82,6 +86,9 @@ public class SplashDialog extends Dialog {
             InputStream is = context.getResources().getAssets().open(bitmapName);
             bitmap = BitmapFactory.decodeStream(is);
             image_splash.setImageBitmap(bitmap);
+            if(hdorientation == 1){
+                image_splash.setScaleType(ImageView.ScaleType.FIT_XY);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

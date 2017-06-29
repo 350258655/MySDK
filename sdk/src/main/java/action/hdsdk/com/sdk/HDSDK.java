@@ -74,7 +74,7 @@ public class HDSDK {
         // 注册广播接收者检查支付是否成功
         sPayResultReceiver = new PayResultReceiver();
         activity.registerReceiver(sPayResultReceiver,new IntentFilter(Const.ACTION_PAY));
-        sInitSuccess = true;
+
 
 
         // gamesetting 接口不接也没什么的，那个只是支付配置
@@ -91,6 +91,8 @@ public class HDSDK {
 //            }
 //
 //        });
+        // 回调
+        initCallBack(activity,initListener,true);
 
 
     }
@@ -238,31 +240,20 @@ public class HDSDK {
     /**
      * 初始化成功的回调
      *
-     * @param json
+     *
      * @param initListener
      * @param isSuccess
      */
-    private static void initCallBack(Activity activity, JSONObject json, InitListener initListener, boolean isSuccess) {
-        if (isSuccess) {
-            try {
-                if (json.getString("code").equals("1")) {
-                    sInitSuccess = true;
-                    initListener.onInitSuccess(json);
-                } else {
-                    sInitSuccess = false;
-                    // 显示错误提示框
-                    ToastUtils.showErrorToast(activity, json, null);
-                    initListener.onInitFail(json);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        } else {
+    private static void initCallBack(Activity activity, InitListener initListener, boolean isSuccess) {
+        if(isSuccess){
+            initListener.onInitSuccess(Const.INIT_SUCCESS);
+            sInitSuccess = true;
+        }else {
+            initListener.onInitFail(Const.INIT_FAIL);
+            ToastUtils.showErrorToast(activity, null, Const.INIT_FAIL);
             sInitSuccess = false;
-            initListener.onInitFail(json);
-            // 显示初始化错误的吐司
-            ToastUtils.showErrorToast(activity, json, null);
         }
+
     }
 
 
