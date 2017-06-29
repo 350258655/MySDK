@@ -72,10 +72,24 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
                 // 隐藏悬浮框
                 if (mCanHide) {
                     mCanHide = false;
+
+                    LayoutParams params = (LayoutParams) mFlFloatLogo.getLayoutParams();
+                    // 隐藏掉 2/3
+                    int margin = params.width * 2 / 3;
                     if (mIsRight) {
-                        mIvFloatLogo.setImageResource(R.drawable.hd_image_float_right);
+                        // mIvFloatLogo.setImageResource(R.drawable.pj_image_float_right);
+                        params.setMargins(0, 0, -margin, 0);
+                        // 设置padding可以让整个小球看起来变小,因为有了padding，子view所占空间就会被压缩
+                        // mFlFloatLogo.setPadding(0, 16, 16, 16);
+                        mFlFloatLogo.setLayoutParams(params);
                     } else {
-                        mIvFloatLogo.setImageResource(R.drawable.hd_image_float_left);
+
+                        params.setMargins(-margin, 0, 0, 0);
+                        // 设置padding可以让整个小球看起来变小,因为有了padding，子view所占空间就会被压缩
+                        // mFlFloatLogo.setPadding(0, 16, 16, 16);
+                        mFlFloatLogo.setLayoutParams(params);
+
+
                     }
                     //降低透明度
                     mWmParams.alpha = 0.7f;
@@ -84,6 +98,8 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
                     mLlFloatMenu.setVisibility(GONE);
                 }
             } else if (msg.what == HANDLER_TYPE_CANCEL_ANIM) {
+                // 恢复悬浮窗原本状态
+                resetLogoSize();
                 // 隐藏“旋转”动画
                 mIvFloatLoader.clearAnimation();
                 mIvFloatLoader.setVisibility(GONE);
@@ -221,6 +237,19 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
         return rootFloatView;
     }
 
+    /**
+     * 悬浮球缩进屏幕后，恢复原始状态
+     */
+    private void resetLogoSize() {
+
+        int length = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, mContext.getResources().getDisplayMetrics());
+        LayoutParams params = (LayoutParams) mFlFloatLogo.getLayoutParams();
+        params.width = length;
+        params.height = length;
+        params.setMargins(0, 0, 0, 0);
+        mFlFloatLogo.setLayoutParams(params);
+    }
+
 
     /**
      * getX()和getRawX()的区别
@@ -241,8 +270,9 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
             case MotionEvent.ACTION_DOWN:
                 mTouchStartX = event.getX();
                 mTouchStartY = event.getY();
-               // mIvFloatLogo.setImageResource(R.drawable.pj_image_float_logo);
-                mIvFloatLogo.setImageResource(R.drawable.xiaohao);
+                // 恢复悬浮窗原本状态
+                resetLogoSize();
+
                 // 设置透明度
                 mWmParams.alpha = 1f;
                 mWindowManager.updateViewLayout(this, mWmParams);
@@ -275,8 +305,6 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
                     mWmParams.x = 0;
                     mIsRight = false;
                 }
-              //  mIvFloatLogo.setImageResource(R.drawable.pj_image_float_logo);
-                mIvFloatLogo.setImageResource(R.drawable.xiaohao);
                 // 刷新界面
                 refreshFloatMenu(mIsRight);
                 // 启动隐藏定时任务
@@ -292,12 +320,13 @@ public class FloatView extends FrameLayout implements View.OnTouchListener {
 
 
     public void show() {
+        // 恢复悬浮窗原本状态
+        resetLogoSize();
+
         if (getVisibility() != VISIBLE) {
             setVisibility(VISIBLE);
             if (mShowLoader) {
                 // 更新界面参数
-                mIvFloatLogo.setImageResource(R.drawable.xiaohao);
-              //  mIvFloatLogo.setImageResource(R.drawable.pj_image_float_logo);
                 mWmParams.alpha = 1f;
                 mWindowManager.updateViewLayout(this, mWmParams);
 
