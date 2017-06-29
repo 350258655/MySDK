@@ -1,45 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:background="@drawable/hd_corner_bg_white"
-              android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="wrap_content"
+              android:background="@drawable/hd_corner_bg_white"
+              android:orientation="vertical">
 
     <!--<RelativeLayout-->
-        <!--android:id="@+id/rl"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="45dp"-->
-        <!-->-->
+    <!--android:id="@+id/rl"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="45dp"-->
+    <!-->-->
 
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_centerVertical="true"-->
-            <!--android:src="@mipmap/logo"/>-->
+    <!--<ImageView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginLeft="10dp"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:src="@mipmap/logo"/>-->
     <!--</RelativeLayout>-->
 
     <!--<TextView-->
-        <!--android:text="正在进入游戏..."-->
-        <!--android:textColor="#000"-->
-        <!--android:textSize="25sp"-->
-        <!--android:textStyle="bold"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_centerVertical="true"-->
-        <!--android:layout_centerHorizontal="true"/>-->
+    <!--android:text="正在进入游戏..."-->
+    <!--android:textColor="#000"-->
+    <!--android:textSize="25sp"-->
+    <!--android:textStyle="bold"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_centerHorizontal="true"/>-->
 
     <!--<Button-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_marginBottom="20dp"-->
-        <!--android:id="@+id/btn_logout"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_height="45dp"-->
-        <!--android:text="切换帐号"-->
-        <!--android:textSize="16sp"-->
-        <!--android:textColor="#fff"-->
-        <!--android:background="@drawable/btn_log"/>-->
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginBottom="20dp"-->
+    <!--android:id="@+id/btn_logout"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_centerHorizontal="true"-->
+    <!--android:layout_height="45dp"-->
+    <!--android:text="切换帐号"-->
+    <!--android:textSize="16sp"-->
+    <!--android:textColor="#fff"-->
+    <!--android:background="@drawable/btn_log"/>-->
 
     <RelativeLayout
         android:id="@+id/rl"
@@ -50,31 +50,42 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x10"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x10"
             android:src="@mipmap/logo"/>
     </RelativeLayout>
 
-    <TextView
-        android:text="正在进入游戏..."
-        android:textColor="#000"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/x20"
-        android:id="@+id/btn_logout"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_height="@dimen/x45"
-        android:text="切换帐号"
-        android:textSize="16sp"
-        android:textColor="#fff"
-        android:background="@drawable/btn_log"/>
+        <TextView
+            android:id="@+id/tv_going_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/x20"
+            android:text="正在进入游戏..."
+            android:textColor="#000"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/btn_logout"
+            android:layout_below="@+id/tv_going_game"
+            android:layout_marginTop="@dimen/x20"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/x40"
+            android:paddingRight="@dimen/x30"
+            android:paddingLeft="@dimen/x30"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/x20"
+            android:background="@drawable/btn_log"
+            android:text="切换帐号"
+            android:textColor="#fff"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

@@ -62,7 +62,7 @@ public class BaseDialog extends Dialog {
         // 设置不可以点击外部的东西
         setCanceledOnTouchOutside(false);
 
-        int[] windowSize = onLayoutCallBack();
+         onLayoutCallBack();
 
 
         // 设置取消事件
@@ -95,14 +95,22 @@ public class BaseDialog extends Dialog {
      */
     @Override
     public void setContentView(View view) {
-        int[] point = onLayoutCallBack();
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(point[0], point[1]);
-        Utils.log(BaseDialog.class, "onLayoutCallBack,window的宽：" + point[0] + ",window的高：" + point[1]);
+        int width = onLayoutCallBack();
+//        if(mEvent.equals(Const.BIND_PHONE_DIALOG) || mEvent.equals(Const.LOGIN_DIALOG)){
+//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(point[0],ViewGroup.LayoutParams.WRAP_CONTENT);
+//            super.setContentView(view, params);
+//        }else {
+//
+//            ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(point[0], point[1]);
+//            super.setContentView(view, params);
+//        }
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(width, ViewGroup.LayoutParams.WRAP_CONTENT);
+        Utils.log(BaseDialog.class, "onLayoutCallBack,window的宽(宽度根据比例)：" + width + ",window的高(高度跟随内容,WRAP_CONTENT)：");
         super.setContentView(view, params);
     }
 
 
-    protected int[] onLayoutCallBack() {
+    protected int onLayoutCallBack() {
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         dialogWindow.setGravity(Gravity.CENTER);
@@ -122,17 +130,18 @@ public class BaseDialog extends Dialog {
         //lp.height = height / 2;
 
         // 自动登录框高度小一点
-        if(mEvent == Const.AUTO_LOGIN_DIALOG){
-            lp.height = height / 3;
-        }else if(mEvent == Const.ORDER_DIALOG){
-          // 支付框的高度大一点
-            lp.height = height / 2;
-        } else {
-            lp.height = height * 2 / 5;
-        }
+//        if(mEvent == Const.AUTO_LOGIN_DIALOG ){
+//            lp.height = height / 3;
+//        }else if(mEvent == Const.ORDER_DIALOG){
+//          // 支付框的高度大一点
+//            lp.height = height / 2;
+//        } else {
+//            lp.height = height * 2 / 5;
+//        }
+
         dialogWindow.setAttributes(lp);
         Utils.log(BaseDialog.class, "onLayoutCallBack,屏幕的宽：" + width + ",屏幕的高：" + height);
-        return new int[]{lp.width, lp.height};
+        return lp.width;
     }
 
 

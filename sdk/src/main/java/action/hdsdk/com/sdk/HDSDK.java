@@ -74,21 +74,24 @@ public class HDSDK {
         // 注册广播接收者检查支付是否成功
         sPayResultReceiver = new PayResultReceiver();
         activity.registerReceiver(sPayResultReceiver,new IntentFilter(Const.ACTION_PAY));
+        sInitSuccess = true;
 
 
+        // gamesetting 接口不接也没什么的，那个只是支付配置
         // 请求初始化接口
-        mOkHttpHelper.get(API.GAME_SETTING, new HttpCallback(activity, Const.INIT_MSG) {
-            @Override
-            public void onSuccess(JSONObject json) {
-                initCallBack(activity, json, initListener, true);
-            }
+//        mOkHttpHelper.get(API.GAME_SETTING, new HttpCallback(activity, Const.INIT_MSG) {
+//            @Override
+//            public void onSuccess(JSONObject json) {
+//                initCallBack(activity, json, initListener, true);
+//            }
+//
+//            @Override
+//            public void onError(JSONObject json) {
+//                initCallBack(activity, json, initListener, false);
+//            }
+//
+//        });
 
-            @Override
-            public void onError(JSONObject json) {
-                initCallBack(activity, json, initListener, false);
-            }
-
-        });
 
     }
 
