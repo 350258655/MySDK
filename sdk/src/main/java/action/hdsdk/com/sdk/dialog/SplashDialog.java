@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import action.hdsdk.com.sdk.R;
+import action.hdsdk.com.sdk.utils.BitmapUtils;
 import action.hdsdk.com.sdk.utils.MetaDataUtils;
 import action.hdsdk.com.sdk.utils.Utils;
 
@@ -30,6 +31,8 @@ public class SplashDialog extends Dialog {
     private ImageView image_splash;
     private Handler mHandler;
     private int hdorientation = 0;
+    private int width;  // 屏幕宽
+    private int height;  // 屏幕高
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
@@ -40,18 +43,18 @@ public class SplashDialog extends Dialog {
 
 
     public SplashDialog(Context context) {
-        super(context,android.R.style.Theme_Light_NoTitleBar_Fullscreen);
+        super(context, android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         this.mContext = context;
         // 无title
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         // 全屏
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         // 背景色透明
         getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         // 设置window type
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             getWindow().setType(WindowManager.LayoutParams.TYPE_TOAST);
-        }else {
+        } else {
             getWindow().setType(WindowManager.LayoutParams.TYPE_PHONE);
         }
 
@@ -61,14 +64,14 @@ public class SplashDialog extends Dialog {
         // 判断横竖屏
         DisplayMetrics dm = new DisplayMetrics();
         getWindow().getWindowManager().getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        int height = dm.heightPixels;
+        width = dm.widthPixels;
+        height = dm.heightPixels;
         // 横屏
-        if(width > height){
+        if (width > height) {
             hdorientation = 1;
-            initBitmap(context,"horizontalSplash.png");
-        }else {
-            initBitmap(context,"verticalSplash.png");
+            initBitmap(context, "horizontalSplash.png");
+        } else {
+            initBitmap(context, "verticalSplash.png");
         }
 
 
@@ -80,13 +83,16 @@ public class SplashDialog extends Dialog {
     /**
      * 初始化splash的图片
      */
-    private void initBitmap(Context context,String bitmapName) {
-        Bitmap bitmap = null;
+    private void initBitmap(Context context, String bitmapName) {
+        // Bitmap bitmap = null;
         try {
             InputStream is = context.getResources().getAssets().open(bitmapName);
-            bitmap = BitmapFactory.decodeStream(is);
+            //   bitmap = BitmapFactory.decodeStream(is);
+
+            Bitmap bitmap = BitmapUtils.decodeBitmapFromStream(is, width, height);
+
             image_splash.setImageBitmap(bitmap);
-            if(hdorientation == 1){
+            if (hdorientation == 1) {
                 image_splash.setScaleType(ImageView.ScaleType.FIT_XY);
             }
         } catch (IOException e) {
@@ -99,10 +105,10 @@ public class SplashDialog extends Dialog {
     /**
      * 显示splash
      */
-    public void show(){
+    public void show() {
         super.show();
         // 显示2秒
-        mHandler.postDelayed(mRunnable,2000);
+        mHandler.postDelayed(mRunnable, 2000);
     }
 
     /**
@@ -111,7 +117,7 @@ public class SplashDialog extends Dialog {
     @Override
     public void cancel() {
         mHandler.removeCallbacks(mRunnable);
-        if(this.isShowing()){
+        if (this.isShowing()) {
             super.cancel();
         }
     }

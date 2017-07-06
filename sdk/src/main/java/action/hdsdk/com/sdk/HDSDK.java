@@ -232,6 +232,7 @@ public class HDSDK {
         // 注销广播接收者
         activity.unregisterReceiver(mIsLoginReceiver);
         activity.unregisterReceiver(sLogoutReceiver);
+        activity.unregisterReceiver(sPayResultReceiver);
         // 销毁悬浮窗
         mFloatViewService.destroyFloatView();
     }
