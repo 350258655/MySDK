@@ -96,7 +96,6 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
         // 注册监听时间
         mBtn_login.setOnClickListener(this);
         mBtn_reg.setOnClickListener(this);
-        mTv_forgetPwd.setOnClickListener(this);
 
         //设置点击的监听事件，监听后的操作交给用户去使用
         mSv_username.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -188,8 +187,6 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
             doLogin();
         } else if (i == R.id.btn_one_key_reg) {
             getRoleInfo();
-        } else if (i == R.id.hd_login_forget_pwd_textView) {
-
         }
     }
 
@@ -197,6 +194,10 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
      * 登录
      */
     private void doLogin() {
+
+        // 先让登录按钮不可点击
+        mBtn_login.setClickable(false);
+
         String url = API.GAME_LOGIN + "&username=" + mEt_username.getText().toString() + "&password=" + mEt_password.getText().toString();
         Utils.log(LoginDialog.class, "登录校验URL：" + url);
         mOkHttpHelper.get(url, new HttpCallback(mContext, "登录中") {
@@ -220,6 +221,9 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
      * 获取注册信息
      */
     private void getRoleInfo() {
+
+        // 设置不可重复点击
+        mBtn_reg.setClickable(false);
 
         mOkHttpHelper.get(API.GAME_ROLE_INFO, new HttpCallback(mContext, "注册中") {
             @Override
@@ -257,6 +261,9 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
                 }
 
             } else {
+
+                // 调用失败也允许点击
+                mBtn_reg.setClickable(true);
                 ToastUtils.showErrorToast(mContext, json, null);
                 mLoginListener.onLoginFail(json);
                 sendFailBroadcast();
@@ -291,6 +298,10 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
      * @param json
      */
     private void dealWithRegisterSuccess(JSONObject json) {
+
+        // 注册成功后恢复按钮功能
+        mBtn_reg.setClickable(true);
+
         Utils.log(LoginDialog.class, "注册成功返回的信息：" + json);
         // 把用户信息存到本地中
         UserList.addUser(new String[]{mEt_username.getText().toString().trim(), psw}, mContext);
@@ -339,6 +350,9 @@ public class LoginDialog extends BaseDialog implements View.OnClickListener {
      * @param json
      */
     private void dealWithlogSuccess(JSONObject json) {
+
+        // 让登录按钮可以点击
+        mBtn_login.setClickable(true);
 
         // 把用户信息存到本地中。因为注册和登录的，不一定是同一个玩家
         UserList.addUser(new String[]{mEt_username.getText().toString(), mEt_password.getText().toString()}, mContext);

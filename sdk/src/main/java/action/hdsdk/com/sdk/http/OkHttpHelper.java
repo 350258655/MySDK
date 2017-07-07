@@ -128,6 +128,7 @@ public class OkHttpHelper {
 
 
                     // 发生json异常
+                    Utils.log(OkHttpHelper.class,e.getMessage());
                     callbackError(callback, null);
                 }
 

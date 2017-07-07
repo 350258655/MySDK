@@ -164,7 +164,7 @@ public class AutoLoginDialog extends BaseDialog {
                 Bundle bundle = new Bundle();
                 bundle.putString(Const.AUTO_LOGIN_CALLBACK,json.toString());
                 message.setData(bundle);
-                mHandler.sendMessageAtTime(message, SystemClock.uptimeMillis()+2000);
+                mHandler.sendMessageAtTime(message, SystemClock.uptimeMillis()+1000);
 
             }else {
                 ToastUtils.showErrorToast(HDApplication.getContext(),json,null);
